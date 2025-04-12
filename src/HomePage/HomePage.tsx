@@ -2,8 +2,8 @@ import React from "react";
 import { useEffect, useRef } from "react";
 
 const HomePage = () => {
-    const containerRefs = [useRef<HTMLDivElement | null>(null), useRef<HTMLDivElement | null>(null), useRef<HTMLDivElement | null>(null)];
-    const contentRefs = [useRef<HTMLDivElement | null>(null), useRef<HTMLDivElement | null>(null), useRef<HTMLDivElement | null>(null)];
+    const containerRefs = [useRef<HTMLDivElement>(null!), useRef<HTMLDivElement>(null!), useRef<HTMLDivElement>(null!)];
+    const contentRefs = [useRef<HTMLDivElement>(null!), useRef<HTMLDivElement>(null!), useRef<HTMLDivElement>(null!)];
     const names = ['Запланировано', 'В процессе...', 'Выполнено']
 
     useEffect(() => {
