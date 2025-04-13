@@ -45,8 +45,8 @@ const Themes = ({show, setShowSettings, setShowThemes}: Props) => {
             {themes.map((name) => (
                 <button
                     key={name}
-                    onMouseEnter={() => changeTheme(name)}
-                    onClick={() => changeTheme(name, true)}
+                    onMouseEnter={() => changeTheme(name as Theme)}
+                    onClick={() => changeTheme(name as Theme, true)}
                     onMouseLeave={() => changeTheme(currentTheme as Theme)}
                     className="flex justify-center items-center w-1/6 h-full p-0"
                 >
