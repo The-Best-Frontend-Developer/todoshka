@@ -7,7 +7,7 @@ const Settings = () => {
 
     return (
         <div className={`
-            absolute top-0 right-0 z-50
+            absolute top-0 right-0 z-30
             ${showSettings ? "translate-x-0" : "translate-x-65"} !duration-400 ease-in-out`}
         >
             <Themes show={isShowThemes} setShowThemes={setIsShowThemes} setShowSettings={setShowSettings}/>

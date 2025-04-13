@@ -27,7 +27,7 @@
 }
 
 .dark {
-    --main-color: #3b3b3b;
+    --main-color: #454545;
     --second-color: #525252;
     --text-color: #e0e0e0;
     --extra-color: #757575;
@@ -41,7 +41,7 @@
     --second-color: #e09600;
     --text-color: #ffffff;
     --extra-color: #363636;
-    --hover-color: #1a1a1a;
+    --hover-color: #111;
     --light-hover: #c87f00;
     --opposite: #212121;
 }
@@ -76,16 +76,6 @@
     --opposite: white;
 }
 
-.lavender {
-    --main-color: #d3b0f5;
-    --second-color: #b7a1f7;
-    --text-color: #2e2d4b;
-    --extra-color: #ad97f0;
-    --hover-color: #a48fe3;
-    --light-hover: #a08ae3;
-    --opposite: white;
-}
-
 
 @theme {
     --color-second: var(--main-color);
@@ -110,9 +100,17 @@ body {
     box-shadow: 0 0 15px 0px var(--color-text);
 }
 
+.modal {
+    background-color: rgba(0,0,0,0.5);
+}
+
+.darkmodal {
+    background-color: rgba(255,255,255,0.5);
+}
+
 /* Стиль для скроллбара */
 .scrollbar-custom::-webkit-scrollbar {
-    width: 7px;/* Толщина скроллбара */
+    width: 8px;/* Толщина скроллбара */
 }
 
 .scrollbar-custom::-webkit-scrollbar-track {
@@ -121,14 +119,10 @@ body {
 }
 
 .scrollbar-custom::-webkit-scrollbar-thumb {
-    background-color: var(--color-extra); /* Цвет индикатора */
+    background-color: var(--color-hover); /* Цвет индикатора */
     border-radius: 10px; /* Округление индикатора */
     border: 2px solid transparent;
     background-clip: content-box;
-}
-
-.scrollbar-custom::-webkit-scrollbar-thumb:hover {
-    background-color: var(--color-hover); /* Цвет индикатора при наведении */
 }
 
 
