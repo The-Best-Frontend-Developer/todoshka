@@ -8,10 +8,11 @@ type Props = {
     containerRef: React.RefObject<HTMLDivElement>,
     contentRef: React.RefObject<HTMLDivElement>,
     name: string,
-    status: Status
+    status: Status,
+    index: number
 }
 
-const Column = ({containerRef, contentRef, name, status}: Props) => {
+const Column = ({containerRef, contentRef, name, status, index}: Props) => {
     const dispatch = useAppDispatch()
 
     useEffect(() => {
@@ -42,7 +43,7 @@ const Column = ({containerRef, contentRef, name, status}: Props) => {
             <div className="flex justify-between h-10 px-3 bg-hover">
                 <h2 className="text-2xl select-none">{name}</h2>
                 <button className="mb-2" onClick={() => dispatch(openCreateModal(status))}>
-                    <svg className="stroke-second" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 32 32" fill="none"
+                    <svg className="stroke-text" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 32 32" fill="none"
                     >
                         <rect
                             x="2"
@@ -74,7 +75,7 @@ const Column = ({containerRef, contentRef, name, status}: Props) => {
             <div className="absolute inset-0 top-10 pointer-events-none inset"></div>
             <div className="flex overflow-auto transition-none" ref={contentRef}>
                 <div className="flex flex-col gap-5 p-7 w-full h-full overflow-auto scrollbar-custom">
-                    <Todos status={status}/>
+                    <Todos status={status} index={index}/>
                 </div>
             </div>
         </div>

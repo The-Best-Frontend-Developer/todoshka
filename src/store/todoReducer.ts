@@ -26,9 +26,40 @@ const todoReducer = createSlice({
             const {id, status} = action.payload;
             state[status] = state[status].filter((el) => el.id !== id)
             localStorage.setItem(status, JSON.stringify(state[status]))
+        },
+        updateTodo: (state, action: PayloadAction<{newTodo: TypeTodo, oldStatus: Status}>) => {
+            const {id, status} = action.payload.newTodo;
+            const {oldStatus} = action.payload
+
+            if (!status) return; // Если статус не указан нигде - выходим
+
+            // Если статус изменился
+            if (oldStatus !== status) {
+                // Удаляем из старого статуса
+                state[oldStatus] = state[oldStatus].filter(todo => todo.id !== id);
+                localStorage.setItem(oldStatus, JSON.stringify(state[oldStatus]));
+            }
+
+            // Обновляем или добавляем в новый статус
+            const existingIndex = state[status].findIndex(todo => todo.id === id);
+
+            if (existingIndex >= 0) {
+                // Обновляем существующую задачу
+                state[status][existingIndex] = {
+                    ...state[status][existingIndex],
+                    ...action.payload.newTodo
+                };
+            } else {
+                // Добавляем как новую задачу (если статус изменился)
+                state[status].push({
+                    ...action.payload.newTodo
+                });
+            }
+
+            localStorage.setItem(status, JSON.stringify(state[status]));
         }
     }
 })
 
-export const {addTodo, deleteTodo} = todoReducer.actions;
+export const {addTodo, updateTodo, deleteTodo} = todoReducer.actions;
 export default todoReducer.reducer

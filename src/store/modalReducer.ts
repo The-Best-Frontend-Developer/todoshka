@@ -1,13 +1,16 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {Status} from "../TypeTodo.ts";
+import {Status, TypeTodo} from "../TypeTodo.ts";
 
 type InitialState = {
     createModal: boolean,
     changeModal: boolean,
-    status: Status
+    status: Status,
+    currentTodo: TypeTodo
 }
 
-const initialState: InitialState = {createModal: false, changeModal: false, status: 'waiting'}
+const currentTodo: TypeTodo = {id: Date.now(), title: 'Задача', description: '', status: 'waiting'}
+
+const initialState: InitialState = {createModal: false, changeModal: false, status: 'waiting', currentTodo}
 
 const modalReducer = createSlice({
     name: 'modal',
@@ -16,14 +19,16 @@ const modalReducer = createSlice({
         openCreateModal: (state, action: PayloadAction<Status>) => {
             state.createModal = true;
             state.status = action.payload
+            state.currentTodo = currentTodo
         },
         closeModal: (state) => {
             state.createModal = false; state.changeModal = false
             state.status = 'waiting'
         },
-        openChangeModal: (state, action: PayloadAction<Status>) => {
+        openChangeModal: (state, action: PayloadAction<TypeTodo>) => {
             state.changeModal = true
-            state.status = action.payload
+            state.currentTodo = action.payload
+            state.status = action.payload.status
         }
     }
 })

@@ -87,6 +87,15 @@
     --color-opposite: var(--opposite);
 }
 
+[draggable="true"] {
+    cursor: grab; /* Устанавливаем свой стиль курсора */
+    user-select: none; /* Отключаем выделение текста */
+}
+
+[draggable="true"]:active {
+    cursor: grabbing; /* Курсор при перетаскивании */
+}
+
 body {
     overflow-x: hidden;
     background-color: var(--color-second);
@@ -139,6 +148,10 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: 500;
 }
 
-a, link, button, svg, span, p, h1, h2, h3, h4, h5, h6, div {
+button, a, Link {
+    cursor: pointer;
+}
+
+a, Link, button, svg, span, p, h1, h2, h3, h4, h5, h6, div {
     transition-duration: 0.2s;
 }

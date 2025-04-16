@@ -12,7 +12,7 @@ const MyModal = () => {
         (<div className={`flex justify-center items-center absolute inset-0 bg-text ${darkTheme ? 'darkmodal' : 'modal'} z-50`}
             onClick={() => dispatch(closeModal())}
         >
-            <div className="bg-second w-[50vw] p-10 rounded-3xl" onClick={(e) => e.stopPropagation()}>
+            <div className="relative bg-second w-[50vw] px-20 py-10 rounded-2xl" onClick={(e) => e.stopPropagation()}>
                 {modal.createModal && <CreateModal status={modal.status}/>}
                 {modal.changeModal && <ChangeModal/>}
             </div>

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import {useEffect, useRef} from "react";
 import Column from "./Column.tsx";
 import {Status} from "../TypeTodo.ts";
 
@@ -41,7 +41,9 @@ const HomePage = () => {
             ref={rootRef}
             className="flex justify-center gap-5 px-[clamp(1.875rem,_1.1607rem_+3.5714vw,_4.375rem)] py-5"
         >
-            {containerRefs.map((ref, i: number) => <Column containerRef={ref} contentRef={contentRefs[i]} key={Math.random()} name={names[i]} status={status[i] as Status}/>)}
+            {containerRefs.map((ref, i: number) => <Column containerRef={ref} contentRef={contentRefs[i]}
+                                                           key={Math.random()} name={names[i]}
+                                                           status={status[i] as Status} index={i}/>)}
         </div>
     );
 };
