@@ -1,17 +1,15 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
-type InitialState = number | null
-const initialState: InitialState = null
+type State = number | null;
+type InitialState = {id: State}
 
-type Payload = {id: InitialState}
+const initialState: InitialState = {id: null}
 
 const activeItemReducer = createSlice({
     name: 'activeItem',
     initialState,
     reducers: {
-        setActiveItem: (_, action: PayloadAction<Payload>) => {
-            return action.payload.id;
-        }
+        setActiveItem: (_, action: PayloadAction<{id: State}>) => action.payload,
     }
 })
 

@@ -67,10 +67,10 @@ const HomePage = () => {
             sensors={sensors}
             collisionDetection={closestCenter}
             onDragStart={(e) => {
-                const {id} = e.active
+                const id = Number(e.active.id)
                 dispatch(setActiveItem({id}));
             }}
-            onDragEnd={(e) => {handleDragEnd(e); dispatch(setActiveItem(null))}}
+            onDragEnd={(e) => {handleDragEnd(e); dispatch(setActiveItem({id: null}))}}
         >
             <div
                 ref={rootRef}

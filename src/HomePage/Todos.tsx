@@ -12,7 +12,7 @@ const Todos = ({status, index}: { status: Status, index: number }) => {
 
     const activeItemId = useAppSelector(state => state.activeItem)
     const activeTodo = todos.waiting.concat(todos.progress, todos.done)
-        .find(todo => todo.id === activeItemId);
+        .find(todo => todo.id === activeItemId.id);
 
     return (
         <>

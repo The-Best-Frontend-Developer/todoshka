@@ -1,6 +1,6 @@
 import {Outlet} from "react-router-dom";
 import Header from "./Header/Header.tsx";
-import {useAppDispatch, useAppSelector} from "./store/myHook.ts";
+import {useAppDispatch} from "./store/myHook.ts";
 import {addTodo} from "./store/Reducers/todoReducer.ts";
 import MyModal from "./MyModal/MyModal.tsx";
 import {useEffect} from "react";

@@ -1,22 +1,23 @@
 import { useEffect } from "react";
-import { useAppDispatch, useAppSelector} from "./store/myHook.ts";
-import { setTodoSelected} from "./store/Reducers/todoReducer.ts";
+import { useAppDispatch, useAppSelector } from "./store/myHook.ts";
+import { setTodoSelected } from "./store/Reducers/todoReducer.ts";
+
+const statuses = ['waiting', 'progress', 'done'] as const;
 
 export const SelectionSync = () => {
     const dispatch = useAppDispatch();
     const translateItems = useAppSelector(state => state.translateItems);
-    const todosByStatus = useAppSelector(state => state.todo); // { waiting, progress, done }
+    const todosByStatus = useAppSelector(state => state.todo);
 
     useEffect(() => {
         const selectedIds = translateItems.map(item => item.id);
 
-        // Пройтись по всем тудушкам в каждом статусе
-        ['waiting', 'progress', 'done'].forEach((status) => {
-            todosByStatus[status].forEach(todo => {
+        statuses.forEach((status) => {
+            todosByStatus[status].forEach((todo) => {
                 const isSelected = selectedIds.includes(todo.id);
                 dispatch(setTodoSelected({
                     id: todo.id,
-                    status: status as keyof typeof todosByStatus,
+                    status,
                     selected: isSelected,
                 }));
             });

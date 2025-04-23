@@ -76,7 +76,7 @@ const todoReducer = createSlice({
         },
         setTodoSelected: (
             state,
-            action: PayloadAction<{ id: string, status: keyof InitialState, selected: boolean }>
+            action: PayloadAction<{ id: number, status: keyof InitialState, selected: boolean }>
         ) => {
             const todo = state[action.payload.status].find(t => t.id === Number(action.payload.id));
             if (todo) {

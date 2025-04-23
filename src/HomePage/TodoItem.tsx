@@ -50,7 +50,7 @@ const TodoItem = ({el, status, isOverlay}: { el: TypeTodo, status: Status, isOve
                  }}
             >
                 <div
-                    className={`absolute -left-6.5 top-[calc(50%_-_18px)] fill-text ${isOverlay ? 'opacity-0 cursor-grabbing' : 'cursor-grab opacity-100'}`}
+                    className={`absolute -left-6.5 top-[calc(50%_-_18px)] fill-text ${isOverlay ? 'opacity-0 cursor-grabbing' : 'cursor-grab noopacity'}`}
                     {...listeners} {...attributes}
                 >
                     <svg version="1.1" width="36" height="36" viewBox="0 0 36 36" preserveAspectRatio="xMidYMid meet"
