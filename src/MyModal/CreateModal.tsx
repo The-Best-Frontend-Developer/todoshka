@@ -93,7 +93,7 @@ const CreateModal = ({status}: { status?: Status }) => {
                     onClick={(e) => {
                         e.preventDefault();
                         if (!errors && isTouched) {
-                            dispatch(addTodo({id: Date.now(), title, description, status: selectedValue, selected: false}));
+                            dispatch(addTodo({id: Date.now(), title, description, status: selectedValue}));
                             dispatch(closeModal());
                         } else { validation() }
                     }}

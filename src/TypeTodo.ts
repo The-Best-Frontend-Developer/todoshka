@@ -5,5 +5,5 @@ export type TypeTodo = {
     title: string,
     description: string,
     status: Status,
-    selected: boolean
+    selected?: boolean
 }
