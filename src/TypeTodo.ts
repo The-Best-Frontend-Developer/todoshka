@@ -4,5 +4,6 @@ export type TypeTodo = {
     id: number,
     title: string,
     description: string,
-    status: Status
+    status: Status,
+    selected: boolean
 }

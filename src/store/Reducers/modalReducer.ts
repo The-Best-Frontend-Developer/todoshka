@@ -1,5 +1,5 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {Status, TypeTodo} from "../TypeTodo.ts";
+import {Status, TypeTodo} from "../../TypeTodo.ts";
 
 type InitialState = {
     createModal: boolean,

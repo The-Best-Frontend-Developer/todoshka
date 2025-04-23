@@ -1,8 +1,8 @@
 import {Status} from "../TypeTodo.ts";
 import {useEffect, useRef, useState} from "react";
-import {addTodo} from "../store/todoReducer.ts";
+import {addTodo} from "../store/Reducers/todoReducer.ts";
 import {useAppDispatch} from "../store/myHook.ts";
-import {closeModal} from "../store/modalReducer.ts";
+import {closeModal} from "../store/Reducers/modalReducer.ts";
 
 const CreateModal = ({status}: { status?: Status }) => {
     const dispatch = useAppDispatch()
@@ -53,11 +53,11 @@ const CreateModal = ({status}: { status?: Status }) => {
                         width="40"
                         height="40"
                         rx="10"
-                        stroke-width="1"
+                        strokeWidth="1"
                         fill="none"
                     />
-                    <line x1="16" y1="16" x2="32" y2="32" stroke-width="1"/>
-                    <line x1="32" y1="16" x2="16" y2="32" stroke-width="1"/>
+                    <line x1="16" y1="16" x2="32" y2="32" strokeWidth="1"/>
+                    <line x1="32" y1="16" x2="16" y2="32" strokeWidth="1"/>
                 </svg>
             </button>
             <input spellCheck={false} required
@@ -93,7 +93,7 @@ const CreateModal = ({status}: { status?: Status }) => {
                     onClick={(e) => {
                         e.preventDefault();
                         if (!errors && isTouched) {
-                            dispatch(addTodo({id: Date.now(), title, description, status: selectedValue}));
+                            dispatch(addTodo({id: Date.now(), title, description, status: selectedValue, selected: false}));
                             dispatch(closeModal());
                         } else { validation() }
                     }}

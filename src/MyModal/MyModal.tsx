@@ -1,5 +1,5 @@
 import {useAppSelector, useAppDispatch} from "../store/myHook.ts";
-import {closeModal} from "../store/modalReducer.ts";
+import {closeModal} from "../store/Reducers/modalReducer.ts";
 import CreateModal from "./CreateModal.tsx";
 import ChangeModal from "./ChangeModal.tsx";
 

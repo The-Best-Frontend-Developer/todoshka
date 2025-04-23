@@ -1,10 +1,16 @@
 import {useEffect, useRef} from "react";
 import Column from "./Column.tsx";
 import {Status} from "../TypeTodo.ts";
+import {closestCenter, DndContext, DragEndEvent, PointerSensor, useSensor, useSensors} from "@dnd-kit/core";
+import {moveTodo} from "../store/Reducers/todoReducer.ts";
+import {useAppDispatch} from "../store/myHook.ts";
+import {setActiveItem} from "../store/Reducers/activeItemReducer.ts";
+import {restrictToParentElement, restrictToVerticalAxis} from "@dnd-kit/modifiers";
 
 const HomePage = () => {
-    const status = ['waiting', 'progress', 'done']
+    const dispatch = useAppDispatch()
 
+    const status: Status[] = ['waiting', 'progress', 'done']
     const names = ['Запланировано', 'В процессе...', 'Выполнено'];
 
     const rootRef = useRef<HTMLDivElement>(null!);
@@ -25,7 +31,10 @@ const HomePage = () => {
         const updateRootHeight = () => {
             if (!rootRef.current) return;
             const newHeight = window.innerHeight - headerHeight;
+            console.log(window.innerHeight)
+            console.log(newHeight)
             rootRef.current.style.height = `${newHeight}px`;
+            console.log(rootRef.current.style.height)
         };
 
         updateRootHeight(); // первичная установка
@@ -36,15 +45,42 @@ const HomePage = () => {
         };
     }, []);
 
+    const sensors = useSensors(useSensor(PointerSensor))
+
+    const handleDragEnd = (event: DragEndEvent) => {
+        const { active, over } = event;
+
+        // Проверяем, что элемент был перемещен в другой статус
+        if (over && active.id !== over.id) {
+            // Ищем индекс перемещенного элемента и индекса куда его перетащили
+            const from = Number(active.id); // ID элемента, который перетаскиваем
+            const to = Number(over.id); // ID элемента, на который перетаскиваем
+
+            // Диспатчим экшен для обновления порядка
+            dispatch(moveTodo({ from, to }));
+        }
+    };
+
     return (
-        <div
-            ref={rootRef}
-            className="flex justify-center gap-5 px-[clamp(1.875rem,_1.1607rem_+3.5714vw,_4.375rem)] py-5"
+        <DndContext
+            modifiers={[restrictToParentElement, restrictToVerticalAxis]}
+            sensors={sensors}
+            collisionDetection={closestCenter}
+            onDragStart={(e) => {
+                const {id} = e.active
+                dispatch(setActiveItem({id}));
+            }}
+            onDragEnd={(e) => {handleDragEnd(e); dispatch(setActiveItem(null))}}
         >
-            {containerRefs.map((ref, i: number) => <Column containerRef={ref} contentRef={contentRefs[i]}
-                                                           key={Math.random()} name={names[i]}
-                                                           status={status[i] as Status} index={i}/>)}
-        </div>
+            <div
+                ref={rootRef}
+                className="grid grid-cols-3 justify-center gap-4 px-[clamp(1.875rem,_1.1607rem_+3.5714vw,_4.375rem)] py-5"
+            >
+                {containerRefs.map((ref, i: number) => <Column containerRef={ref} contentRef={contentRefs[i]}
+                                                               key={Math.random()} name={names[i]}
+                                                               status={status[i]} index={i}/>)}
+            </div>
+        </DndContext>
     );
 };
 

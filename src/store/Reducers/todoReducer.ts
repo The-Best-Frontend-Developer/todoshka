@@ -1,5 +1,5 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {Status, TypeTodo} from "../TypeTodo.ts";
+import {Status, TypeTodo} from "../../TypeTodo.ts";
 
 type InitialState = {
     waiting: TypeTodo[],
@@ -57,9 +57,34 @@ const todoReducer = createSlice({
             }
 
             localStorage.setItem(status, JSON.stringify(state[status]));
+        },
+        moveTodo: (state, action: PayloadAction<{from: number, to: number}>) => {
+            const { from, to } = action.payload;
+            const statuses: Status[] = ['waiting', 'progress', 'done'];
+
+            for (const status of statuses) {
+                const list = state[status];
+                const fromIndex = list.findIndex(todo => todo.id === from);
+                const toIndex = list.findIndex(todo => todo.id === to);
+
+                if (fromIndex !== -1 && toIndex !== -1) {
+                    const [moved] = list.splice(fromIndex, 1); // Удаляем элемент из исходного места
+                    list.splice(toIndex, 0, moved); // Вставляем элемент в новое место
+                    break;
+                }
+            }
+        },
+        setTodoSelected: (
+            state,
+            action: PayloadAction<{ id: string, status: keyof InitialState, selected: boolean }>
+        ) => {
+            const todo = state[action.payload.status].find(t => t.id === Number(action.payload.id));
+            if (todo) {
+                todo.selected = action.payload.selected;
+            }
         }
     }
 })
 
-export const {addTodo, updateTodo, deleteTodo} = todoReducer.actions;
+export const {addTodo, updateTodo, deleteTodo, moveTodo, setTodoSelected} = todoReducer.actions;
 export default todoReducer.reducer

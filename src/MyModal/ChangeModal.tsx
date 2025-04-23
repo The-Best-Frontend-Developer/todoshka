@@ -1,6 +1,6 @@
 import {Status} from "../TypeTodo.ts";
-import {deleteTodo, updateTodo} from "../store/todoReducer.ts";
-import {closeModal} from "../store/modalReducer.ts";
+import {deleteTodo, updateTodo} from "../store/Reducers/todoReducer.ts";
+import {closeModal} from "../store/Reducers/modalReducer.ts";
 import {useAppDispatch, useAppSelector} from "../store/myHook.ts";
 import {useEffect, useRef, useState} from "react";
 
@@ -44,11 +44,11 @@ const ChangeModal = () => {
                         width="40"
                         height="40"
                         rx="10"
-                        stroke-width="1"
+                        strokeWidth="1"
                         fill="none"
                     />
-                    <line x1="16" y1="16" x2="32" y2="32" stroke-width="1"/>
-                    <line x1="32" y1="16" x2="16" y2="32" stroke-width="1"/>
+                    <line x1="16" y1="16" x2="32" y2="32" strokeWidth="1"/>
+                    <line x1="32" y1="16" x2="16" y2="32" strokeWidth="1"/>
                 </svg>
             </button>
             <input spellCheck={false} required
