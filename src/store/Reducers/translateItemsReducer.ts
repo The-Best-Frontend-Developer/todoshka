@@ -1,5 +1,5 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {TypeTodo} from "../../TypeTodo.ts";
+import {Status, TypeTodo} from "../../TypeTodo.ts";
 
 type InitialState = TypeTodo[]
 const initialState: InitialState = []
@@ -17,9 +17,14 @@ const translateItemsReducer = createSlice({
         },
         deleteAllItems: () => {
             return []
+        },
+        changeStatus: (state, action: PayloadAction<Status>) => {
+            state.forEach((el) => {
+                el.status = action.payload
+            })
         }
     }
 })
 
-export const {addItem, deleteItem, deleteAllItems} = translateItemsReducer.actions
+export const {addItem, deleteItem, deleteAllItems, changeStatus} = translateItemsReducer.actions
 export default translateItemsReducer.reducer;

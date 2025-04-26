@@ -1,17 +1,17 @@
 import {Status} from "../TypeTodo.ts";
-import {useEffect, useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {addTodo} from "../store/Reducers/todoReducer.ts";
 import {useAppDispatch} from "../store/myHook.ts";
 import {closeModal} from "../store/Reducers/modalReducer.ts";
 
-const CreateModal = ({status}: { status?: Status }) => {
+const CreateModal = ({status, errors, setErrors}: { status?: Status, errors: string | null, setErrors: React.Dispatch<React.SetStateAction<string | null>> }) => {
     const dispatch = useAppDispatch()
 
     const [title, setTitle] = useState('')
     const [description, setDescription] = useState('')
     const [selectedValue, setSelectedValue] = useState<Status>(status || 'waiting')
-    const [errors, setErrors] = useState<string | null>(null)
     const [isTouched, setIsTouched] = useState(false)
+    const formRef = useRef<HTMLFormElement | null>(null)
 
     const textareaRef = useRef<HTMLTextAreaElement>(null!)
 
@@ -39,11 +39,26 @@ const CreateModal = ({status}: { status?: Status }) => {
         }
     }
 
+    function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+
+            const trimmed = title.trim();
+            const isValid = trimmed !== '';
+
+            setErrors(isValid ? null : 'Название обязательно');
+
+            if (isValid) {
+                formRef.current?.requestSubmit();
+            }
+        }
+    }
+
     return (
-        <form className="flex flex-col gap-3">
+        <form className="flex flex-col gap-3" ref={formRef}>
             <h2 className="text-4xl">Создать задачу</h2>
             <button type="button" className="absolute right-1 top-1 stroke-red-500 hover:stroke-red-400"
-                    onClick={() => dispatch(closeModal())}
+                    onClick={() => {dispatch(closeModal()); setErrors(null)}}
             >
                 <svg width="35" height="35" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"
                 >
@@ -61,6 +76,7 @@ const CreateModal = ({status}: { status?: Status }) => {
                 </svg>
             </button>
             <input spellCheck={false} required
+                   onKeyDown={(e) => handleKeyDown(e)}
                    className="mt-10 relative placeholder:text-main border-1 border-extra rounded-lg p-2 focus:outline-none"
                    type="text" value={title}
                    onChange={(e) => setTitle(e.target.value)}

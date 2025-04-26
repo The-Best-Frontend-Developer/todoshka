@@ -17,6 +17,7 @@ type Props = {
 
 const Column = ({containerRef, contentRef, name, status, index}: Props) => {
     const todos = useAppSelector(state => state.todo)
+    const translateItems = useAppSelector(state => state.translateItems)
     const dispatch = useAppDispatch()
     const statuses: Status[] = ['waiting', "progress", "done"];
 
@@ -52,59 +53,75 @@ const Column = ({containerRef, contentRef, name, status, index}: Props) => {
         >
             <div className="flex justify-between h-10 px-3 bg-hover">
                 <h2 className="text-2xl select-none">{name}</h2>
-                <div className="flex h-full gap-0.5 items-center">
-                    {index === 0 ? (
+                <div className="flex h-full gap-2 items-center">
+                    {!(translateItems.length === 0) ? ((index === 0 && translateItems[0].status === "waiting") ? (
                             <>
                                 <button className="stroke-text" onClick={() => dispatch(moveItemsThunk(statuses[1]))}>
                                     <svg width="24" height="24" viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg">
                                         <rect x="0.5" y="0.5" width="24" height="24" rx="5" fill="none" strokeWidth="2"/>
-                                        <path d="M10 7 L15 12 L10 17" strokeWidth="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M10 7 L15 12 L10 17" strokeWidth="2" fill="none" strokeLinecap="round"
+                                              strokeLinejoin="round"/>
                                     </svg>
                                 </button>
-                                <button>
+                                <button className="stroke-text" onClick={() => dispatch(moveItemsThunk(statuses[2]))}>
+                                    <svg width="24" height="24" viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg">
+                                        <rect x="0.5" y="0.5" width="24" height="24" rx="5" fill="none"
+                                              strokeWidth="2"/>
+                                        <path d="M8 7 L13 12 L8 17" strokeWidth="2" fill="none" strokeLinecap="round"
+                                              strokeLinejoin="round"/>
+                                        <path d="M14.5 7 L19.5 12 L14.5 17" strokeWidth="2" fill="none"
+                                              strokeLinecap="round" strokeLinejoin="round"/>
+                                    </svg>
                                 </button>
                             </>) :
-                        index === 1 ? (<>
-                            <button>
-                            </button>
-                            <button>
-                            </button>
-                        </>) : (<>
-                            <button>
-                            </button>
-                            <button>
-                            </button>
-                        </>)
+                        (index === 1 && translateItems[0].status === "progress") ? (
+                            <>
+                                <button className="stroke-text" onClick={() => dispatch(moveItemsThunk(statuses[0]))}>
+                                    <svg width="24" height="24" viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg">
+                                        <rect x="0.5" y="0.5" width="24" height="24" rx="5" fill="none"
+                                              strokeWidth="2"/>
+                                        <path d="M15 7 L10 12 L15 17" strokeWidth="2" fill="none" strokeLinecap="round"
+                                              strokeLinejoin="round"/>
+                                    </svg>
+                                </button>
+                                <button className="stroke-text" onClick={() => dispatch(moveItemsThunk(statuses[2]))}>
+                                    <svg width="24" height="24" viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg">
+                                        <rect x="0.5" y="0.5" width="24" height="24" rx="5" fill="none" strokeWidth="2"/>
+                                        <path d="M10 7 L15 12 L10 17" strokeWidth="2" fill="none" strokeLinecap="round"
+                                              strokeLinejoin="round"/>
+                                    </svg>
+                                </button>
+                            </>
+                        ) : (index === 2 && translateItems[0].status === "done") ? (
+                            <>
+                                <button className="stroke-text" onClick={() => dispatch(moveItemsThunk(statuses[0]))}>
+                                    <svg width="24" height="24" viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg">
+                                        <rect x="0.5" y="0.5" width="24" height="24" rx="5" fill="none"
+                                              strokeWidth="2"/>
+                                        <path d="M17.5 7 L12.5 12 L17.5 17" strokeWidth="2" fill="none"
+                                              strokeLinecap="round" strokeLinejoin="round"/>
+                                        <path d="M11 7 L6 12 L11 17" strokeWidth="2" fill="none" strokeLinecap="round"
+                                              strokeLinejoin="round"/>
+                                    </svg>
+                                </button>
+                                <button className="stroke-text" onClick={() => dispatch(moveItemsThunk(statuses[1]))}>
+                                    <svg width="24" height="24" viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg">
+                                        <rect x="0.5" y="0.5" width="24" height="24" rx="5" fill="none"
+                                              strokeWidth="2"/>
+                                        <path d="M15 7 L10 12 L15 17" strokeWidth="2" fill="none" strokeLinecap="round"
+                                              strokeLinejoin="round"/>
+                                    </svg>
+                                </button>
+                            </>
+                        ): null) : null
                     }
-                    <button onClick={() => dispatch(openCreateModal(status))}>
-                        <svg className="stroke-text" xmlns="http://www.w3.org/2000/svg" width="26" height="26"
-                             viewBox="0 0 32 32" fill="none"
-                        >
-                            <rect
-                                x="2"
-                                y="2"
-                                width="28"
-                                height="28"
-                                rx="6"
-                                strokeWidth="2"
-                            />
-                            <line
-                                x1="16"
-                                y1="10"
-                                x2="16"
-                                y2="22"
-                                strokeWidth="2"
-                                strokeLinecap="round"
-                            />
-                            <line
-                                x1="10"
-                                y1="16"
-                                x2="22"
-                                y2="16"
-                                strokeWidth="2"
-                                strokeLinecap="round"
-                            />
+                    <button className="stroke-text" onClick={() => dispatch(openCreateModal(status))}>
+                        <svg width="24" height="24" viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="0.5" y="0.5" width="24" height="24" rx="5" fill="none" strokeWidth="2"/>
+                            <line x1="12.5" y1="7" x2="12.5" y2="18" strokeWidth="2" strokeLinecap="round"/>
+                            <line x1="7" y1="12.5" x2="18" y2="12.5" strokeWidth="2" strokeLinecap="round"/>
                         </svg>
+
                     </button>
                 </div>
             </div>

@@ -5,13 +5,15 @@ import activeItemReducer from "./Reducers/activeItemReducer.ts";
 import translateItemsReducer from "./Reducers/translateItemsReducer.ts";
 import {ThunkAction} from '@reduxjs/toolkit';
 import {Action} from 'redux';
+import FirstLastElementIndexesReducer from "./Reducers/FirstLastElementIndexesReducer.ts";
 
 export const store = configureStore({
     reducer: {
         todo: todoReducer,
         modal: modalReducer,
         activeItem: activeItemReducer,
-        translateItems: translateItemsReducer
+        translateItems: translateItemsReducer,
+        indexes: FirstLastElementIndexesReducer
     }
 })
 

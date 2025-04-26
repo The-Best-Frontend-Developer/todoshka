@@ -2,16 +2,15 @@ import {Status} from "../TypeTodo.ts";
 import {deleteTodo, updateTodo} from "../store/Reducers/todoReducer.ts";
 import {closeModal} from "../store/Reducers/modalReducer.ts";
 import {useAppDispatch, useAppSelector} from "../store/myHook.ts";
-import {useEffect, useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 
-const ChangeModal = () => {
+const ChangeModal = ({errors, setErrors}: {errors: string | null, setErrors: React.Dispatch<React.SetStateAction<string | null>> }) => {
     const currentTodo = useAppSelector(state => state.modal.currentTodo)
     const dispatch = useAppDispatch()
 
     const [title, setTitle] = useState(currentTodo.title)
     const [description, setDescription] = useState(currentTodo.description)
     const [selectedValue, setSelectedValue] = useState<Status>(currentTodo.status)
-    const [errors, setErrors] = useState<string | null>(null)
 
     const textareaRef = useRef<HTMLTextAreaElement>(null!)
 
@@ -34,7 +33,7 @@ const ChangeModal = () => {
         <form className="flex flex-col gap-3">
             <h2 className="text-4xl">Изменить задачу</h2>
             <button type="button" className="absolute right-1 top-1 stroke-red-500 hover:stroke-red-400"
-                onClick={() => dispatch(closeModal())}
+                onClick={() => {dispatch(closeModal()); setErrors(null)}}
             >
                 <svg width="35" height="35" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"
                 >

@@ -31,10 +31,7 @@ const HomePage = () => {
         const updateRootHeight = () => {
             if (!rootRef.current) return;
             const newHeight = window.innerHeight - headerHeight;
-            console.log(window.innerHeight)
-            console.log(newHeight)
             rootRef.current.style.height = `${newHeight}px`;
-            console.log(rootRef.current.style.height)
         };
 
         updateRootHeight(); // первичная установка

@@ -1,13 +1,25 @@
 import {openChangeModal} from "../store/Reducers/modalReducer.ts";
 import {deleteTodo} from "../store/Reducers/todoReducer.ts";
-import {useAppDispatch} from "../store/myHook.ts";
+import {useAppDispatch, useAppSelector} from "../store/myHook.ts";
 import {Status, TypeTodo} from "../TypeTodo.ts";
 import {useSortable} from "@dnd-kit/sortable";
-import React from "react";
-import {addItem, deleteAllItems} from "../store/Reducers/translateItemsReducer.ts";
+import React, {useEffect, useState} from "react";
+import {addItem, deleteAllItems, deleteItem} from "../store/Reducers/translateItemsReducer.ts";
 
-const TodoItem = ({el, status, isOverlay}: { el: TypeTodo, status: Status, isOverlay?: boolean }) => {
+type Props = {
+    el: TypeTodo,
+    status: Status,
+    isOverlay?: boolean,
+    firstIndex?: number | null,
+    setFirstIndex?: React.Dispatch<React.SetStateAction<number | null>>
+}
+
+const TodoItem = ({el, status, isOverlay, firstIndex, setFirstIndex}: Props) => {
+    const todos = useAppSelector(state => state.todo)
+    const translateItems = useAppSelector(state => state.translateItems)
     const dispatch = useAppDispatch()
+    const [keyDown, setKeyDown] = useState<"shift" | "ctrl" | null>(null)
+    // const statuses: Status[] = ['waiting', "progress", "done"]
 
     const {
         attributes,
@@ -21,9 +33,89 @@ const TodoItem = ({el, status, isOverlay}: { el: TypeTodo, status: Status, isOve
         disabled: false,
     });
 
-    function handleStop(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+    useEffect(() => {
+        function handleKeyDown(e: KeyboardEvent) {
+            if ((e.target as HTMLElement).tagName !== 'INPUT' &&
+                (e.target as HTMLElement).tagName !== 'TEXTAREA') {
+                if (e.shiftKey) {
+                    setKeyDown('shift')
+                } else if (e.ctrlKey) {
+                    setKeyDown('ctrl')
+                }
+            }
+        }
+
+        function handleKeyUp() {
+            setKeyDown(null)
+        }
+
+        function handleClick(e: MouseEvent) {
+            const isTodo = (e.target as HTMLElement).closest('.todo-item'); // заменяй на свой класс
+
+            if (!isTodo) {
+                setFirstIndex?.(null);
+            }
+        }
+
+        document.addEventListener('click', handleClick)
+        document.addEventListener('keydown', handleKeyDown)
+        document.addEventListener('keyup', handleKeyUp)
+
+        return () => {
+            document.removeEventListener('keydown', handleKeyDown)
+            document.removeEventListener('keyup', handleKeyUp)
+            document.removeEventListener('click', handleClick)
+        }
+    }, []);
+
+    function handleStop(e: React.MouseEvent<HTMLButtonElement | null>) {
         e.preventDefault()
         e.stopPropagation()
+    }
+
+    // НЕ ТРОГАТЬ, ЭТО ДЛЯ ВЫДЕЛЕНИЯ :)
+
+    function handleSelect() {
+        const current = todos[status].findIndex(element => element.id === el.id)
+        const exists = translateItems.some(item => item.id === el.id)
+
+        if (!keyDown) {
+            if (exists) {
+                dispatch(deleteAllItems());
+                return
+            }
+            dispatch(deleteAllItems());
+            dispatch(addItem(el));
+            setFirstIndex?.(current)
+        } else if (keyDown === 'shift') {
+            if (firstIndex !== null && firstIndex !== undefined) {
+                const lastCurrent = todos[status].findIndex(element => element.id === el.id)
+                if (lastCurrent !== null) {
+                    dispatch(deleteAllItems())
+
+                    const start = Math.min(firstIndex, lastCurrent);
+
+                    const end = Math.max(firstIndex, lastCurrent) + 1;
+
+                    const highlighted = todos[status].slice(start, end);
+                    highlighted.forEach((el) => {
+                        dispatch(addItem(el))
+                    })
+                }
+            } else {
+                setFirstIndex?.(current)
+                dispatch(deleteAllItems());
+                dispatch(addItem(el));
+            }
+        } else if (keyDown === 'ctrl') {
+            if (todos[status][current].status === translateItems[0].status) {
+                if (exists) {
+                    dispatch(deleteItem({id: el.id})); // Убираем элемент
+                } else {
+                    dispatch(addItem(el)); // Добавляем элемент
+                }
+            }
+        }
     }
 
     return (
@@ -31,8 +123,10 @@ const TodoItem = ({el, status, isOverlay}: { el: TypeTodo, status: Status, isOve
              className={`px-4 py-2.5
                 ${el.selected ? 'relative before:content-[\'\'] before:absolute ' +
                  'before:left-0 before:top-0 before:w-full before:h-full ' +
-                 'before:bg-blue-500 before:opacity-20 before:z-50' : ''}`}
-             onClick={(e) => {e.stopPropagation()}}
+                 'before:bg-blue-400 before:opacity-20 before:z-50 before:pointer-events-none' : ''}`}
+             onClick={(e) => {
+                 e.stopPropagation()
+             }}
              ref={setNodeRef}
              style={{
                  transform: transform ? `translate(${transform.x}px, ${transform.y}px)` : undefined,
@@ -40,20 +134,17 @@ const TodoItem = ({el, status, isOverlay}: { el: TypeTodo, status: Status, isOve
              }}
         >
             <div className={`
-                    flex flex-col relative shrink-0 px-4 pr-8 py-2 h-23 min-w-10
+                    flex flex-col relative shrink-0 px-4 pr-8 py-2 h-25 min-w-10
                     bg-second rounded-2xl shadowItem item outline-none
                     wrap-break-word ${isDragging ? 'opacity-0' : 'noopacity'}`}
-                 onClick={(e) => {e.stopPropagation()}}
-                 onDoubleClick={() => {
-                     dispatch(deleteAllItems());
-                     dispatch(addItem(el));
-                 }}
+                 onClick={handleSelect}
             >
                 <div
                     className={`absolute -left-6.5 top-[calc(50%_-_18px)] fill-text ${isOverlay ? 'opacity-0 cursor-grabbing' : 'cursor-grab noopacity'}`}
                     {...listeners} {...attributes}
                 >
-                    <svg version="1.1" width="36" height="36" viewBox="0 0 36 36" preserveAspectRatio="xMidYMid meet"
+                    <svg version="1.1" width="36" height="36" viewBox="0 0 36 36"
+                         preserveAspectRatio="xMidYMid meet"
                          xmlns="http://www.w3.org/2000/svg">
                         <title>drag-handle-line</title>
                         <circle cx="15" cy="12" r="1.5" className="clr-i-outline clr-i-outline-path-1"></circle>
@@ -108,8 +199,9 @@ const TodoItem = ({el, status, isOverlay}: { el: TypeTodo, status: Status, isOve
                     </svg>
                 </button>
 
-                <h3 className="text-lg select-none line-clamp-2" title={el.title.length > 25 ? el.title : ''}>{el.title.length > 25 ? el.title.slice(0, 25) + '...' : el.title}</h3>
-                <p className="text-sm select-none leading-[90%] whitespace-pre-wrap line-clamp-3">{el.description}</p>
+                <h3 className="text-lg select-none line-clamp-2"
+                    title={el.title.length > 25 ? el.title : ''}>{el.title.length > 25 ? el.title.slice(0, 25) + '...' : el.title}</h3>
+                <p className="text-sm select-none leading-[115%] whitespace-pre-wrap line-clamp-3">{el.description}</p>
             </div>
         </div>
     );
