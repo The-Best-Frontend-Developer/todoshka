@@ -21,7 +21,7 @@ const Todos = ({status, index}: { status: Status, index: number }) => {
         <>
             {!hasTodos && index === 0 && (
                 <div
-                    className="flex flex-col mt-10 justify-center gap-3 items-center rounded-3xl p-3 bg-hover select-none shadowItem">
+                    className="flex flex-col mt-10 justify-center gap-3 items-center rounded-3xl p-3 bg-hover shadowItem">
                     <h2>Пока пусто...</h2>
                     <button
                         className="p-2 bg-extra hover:bg-main rounded-2xl shadowItem"

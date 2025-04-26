@@ -52,7 +52,7 @@ const Column = ({containerRef, contentRef, name, status, index}: Props) => {
             ref={containerRef}
         >
             <div className="flex justify-between h-10 px-3 bg-hover">
-                <h2 className="text-2xl select-none">{name}</h2>
+                <h2 className="text-2xl ">{name}</h2>
                 <div className="flex h-full gap-2 items-center">
                     {!(translateItems.length === 0) ? ((index === 0 && translateItems[0].status === "waiting") ? (
                             <>

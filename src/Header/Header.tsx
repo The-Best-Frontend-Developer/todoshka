@@ -8,7 +8,7 @@ const Header = () => {
             <Link to='/' className='w-15 bg-gray-300 rounded-3xl'>
                 <img src='./image.png' alt='логотип'/>
             </Link>
-            <h2 className="text-4xl text-text mx-auto select-none">Список дел</h2>
+            <h2 className="text-4xl text-text mx-auto noneSelect">Список дел</h2>
             <button>
                 <svg className="fill-text" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="30" height="30" viewBox="0 0 50 50">
                     <path

@@ -1,9 +1,17 @@
 import Themes from "./Themes.tsx";
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import {useAppDispatch} from "../../store/myHook.ts";
+import {changeRotate} from "../../store/Reducers/rotateReducer.ts";
 
 const Settings = () => {
+    const dispatch = useAppDispatch()
     const [isShowThemes, setIsShowThemes] = useState(false)
     const [showSettings, setShowSettings] = useState(false)
+    const [showRotate, setShowRotate] = useState(false)
+
+    useEffect(() => {
+        console.log(showRotate)
+    }, [showRotate]);
 
     return (
         <div className={`
@@ -46,6 +54,25 @@ const Settings = () => {
                     </button>
                     <button className="bg-main py-2 hover:bg-light-hover">Статистика</button>
                     <button className="bg-main py-2 hover:bg-light-hover">О сайте</button>
+                    <div className={`flex flex-col justify-between bg-main ${showRotate ? 'h-16' : 'h-10'} pt-2 hover:bg-light-hover overflow-hidden`}
+                         onMouseEnter={() => setShowRotate(true)} onMouseLeave={() => setShowRotate(false)}
+                    >
+                        <span className={`flex items-start justify-center w-full`}>Ориентация</span>
+                        <div className="w-full">
+                            <button
+                                className={`py-1 w-1/2 hover:bg-hover ${showRotate ? 'bg-light-hover' : 'bg-main'}`}
+                                onClick={() => dispatch(changeRotate('horizontal'))}
+                            >
+                                <span className="text-sm">Горизонтальная</span>
+                            </button>
+                            <button
+                                className={`py-1 w-1/2 hover:bg-hover ${showRotate ? 'bg-light-hover' : 'bg-main'}`}
+                                onClick={() => dispatch(changeRotate('vertical'))}
+                            >
+                                <span className="text-sm">Вертикальная</span>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

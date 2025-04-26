@@ -6,6 +6,7 @@ import translateItemsReducer from "./Reducers/translateItemsReducer.ts";
 import {ThunkAction} from '@reduxjs/toolkit';
 import {Action} from 'redux';
 import FirstLastElementIndexesReducer from "./Reducers/FirstLastElementIndexesReducer.ts";
+import rotateReducer from "./Reducers/rotateReducer.ts";
 
 export const store = configureStore({
     reducer: {
@@ -13,7 +14,8 @@ export const store = configureStore({
         modal: modalReducer,
         activeItem: activeItemReducer,
         translateItems: translateItemsReducer,
-        indexes: FirstLastElementIndexesReducer
+        indexes: FirstLastElementIndexesReducer,
+        rotate: rotateReducer
     }
 })
 

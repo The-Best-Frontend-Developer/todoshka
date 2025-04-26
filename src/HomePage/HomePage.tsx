@@ -3,12 +3,13 @@ import Column from "./Column.tsx";
 import {Status} from "../TypeTodo.ts";
 import {closestCenter, DndContext, DragEndEvent, PointerSensor, useSensor, useSensors} from "@dnd-kit/core";
 import {moveTodo} from "../store/Reducers/todoReducer.ts";
-import {useAppDispatch} from "../store/myHook.ts";
+import {useAppDispatch, useAppSelector} from "../store/myHook.ts";
 import {setActiveItem} from "../store/Reducers/activeItemReducer.ts";
 import {restrictToParentElement, restrictToVerticalAxis} from "@dnd-kit/modifiers";
 
 const HomePage = () => {
     const dispatch = useAppDispatch()
+    const rotate = useAppSelector(state => state.rotate)
 
     const status: Status[] = ['waiting', 'progress', 'done']
     const names = ['Запланировано', 'В процессе...', 'Выполнено'];
@@ -31,7 +32,10 @@ const HomePage = () => {
         const updateRootHeight = () => {
             if (!rootRef.current) return;
             const newHeight = window.innerHeight - headerHeight;
-            rootRef.current.style.height = `${newHeight}px`;
+            if (rotate === "horizontal") {
+            rootRef.current.style.height = `${newHeight}px`;} else if (rotate === "vertical") {
+                rootRef.current.style.height = `${newHeight * 3}px`
+            }
         };
 
         updateRootHeight(); // первичная установка
@@ -40,7 +44,7 @@ const HomePage = () => {
         return () => {
             window.removeEventListener('resize', updateRootHeight);
         };
-    }, []);
+    }, [rotate]);
 
     const sensors = useSensors(useSensor(PointerSensor))
 
@@ -71,7 +75,7 @@ const HomePage = () => {
         >
             <div
                 ref={rootRef}
-                className="grid grid-cols-3 justify-center gap-4 px-[clamp(1.875rem,_1.1607rem_+3.5714vw,_4.375rem)] py-5"
+                className={`grid ${rotate === "horizontal" ? 'grid-cols-3' : 'grid-rows-3'} justify-center gap-4 px-[clamp(1.875rem,_1.1607rem_+3.5714vw,_4.375rem)] py-5`}
             >
                 {containerRefs.map((ref, i: number) => <Column containerRef={ref} contentRef={contentRefs[i]}
                                                                key={Math.random()} name={names[i]}

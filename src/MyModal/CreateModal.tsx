@@ -49,7 +49,8 @@ const CreateModal = ({status, errors, setErrors}: { status?: Status, errors: str
             setErrors(isValid ? null : 'Название обязательно');
 
             if (isValid) {
-                formRef.current?.requestSubmit();
+                dispatch(addTodo({id: Date.now(), title, description, status: selectedValue}));
+                dispatch(closeModal());
             }
         }
     }

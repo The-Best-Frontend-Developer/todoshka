@@ -199,9 +199,9 @@ const TodoItem = ({el, status, isOverlay, firstIndex, setFirstIndex}: Props) => 
                     </svg>
                 </button>
 
-                <h3 className="text-lg select-none line-clamp-2"
+                <h3 className="text-lg line-clamp-2"
                     title={el.title.length > 25 ? el.title : ''}>{el.title.length > 25 ? el.title.slice(0, 25) + '...' : el.title}</h3>
-                <p className="text-sm select-none leading-[115%] whitespace-pre-wrap line-clamp-3">{el.description}</p>
+                <p className="text-sm leading-[115%] whitespace-pre-wrap line-clamp-3">{el.description}</p>
             </div>
         </div>
     );
