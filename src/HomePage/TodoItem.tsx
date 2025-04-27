@@ -125,7 +125,7 @@ const TodoItem = ({el, status, isOverlay, firstIndex, setFirstIndex}: Props) => 
 
     return (
         <div
-             className={`px-4 py-1.5 sm:py-2.5 min-h-23 h-23 sm:min-h-30 2xl:min-h-35 touch-none
+             className={`px-4 py-1.5 sm:py-2.5 min-h-23 h-23 sm:min-h-30 2xl:min-h-35
                 ${el.selected ? 'relative before:content-[\'\'] before:absolute ' +
                  'before:left-0 before:top-0 before:w-full before:h-full ' +
                  'before:bg-blue-400 before:opacity-20 before:z-50 before:pointer-events-none' : ''}`}
@@ -145,7 +145,7 @@ const TodoItem = ({el, status, isOverlay, firstIndex, setFirstIndex}: Props) => 
                  onClick={handleSelect}
             >
                 <div
-                    className={`absolute -left-6.5 top-[calc(50%_-_18px)] fill-text ${isOverlay ? 'opacity-0 cursor-grabbing' : 'cursor-grab noopacity'}`}
+                    className={`absolute -left-6.5 top-[calc(50%_-_18px)] touch-none fill-text ${isOverlay ? 'opacity-0 cursor-grabbing' : 'cursor-grab noopacity'}`}
                     {...listeners} {...attributes}
                 >
                     <svg version="1.1" width="36" height="36" viewBox="0 0 36 36"
