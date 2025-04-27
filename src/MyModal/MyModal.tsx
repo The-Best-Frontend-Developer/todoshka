@@ -11,7 +11,7 @@ const MyModal = () => {
     const [errors, setErrors] = useState<string | null>(null)
 
     return ((modal.changeModal || modal.createModal) &&
-        (<div className={`flex justify-center items-center absolute inset-0 bg-text ${darkTheme ? 'darkmodal' : 'modal'} z-50`}
+        (<div className={`flex justify-center items-center fixed inset-0 bg-text ${darkTheme ? 'darkmodal' : 'modal'} z-50`}
             onClick={() => dispatch(closeModal())}
         >
             <div className="relative bg-second w-[50vw] px-20 py-10 rounded-2xl border-3 border-solid border-opposite" onClick={(e) => e.stopPropagation()}>

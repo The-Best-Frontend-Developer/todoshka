@@ -18,8 +18,7 @@ const TodoItem = ({el, status, isOverlay, firstIndex, setFirstIndex}: Props) => 
     const todos = useAppSelector(state => state.todo)
     const translateItems = useAppSelector(state => state.translateItems)
     const dispatch = useAppDispatch()
-    const [keyDown, setKeyDown] = useState<"shift" | "ctrl" | null>(null)
-    // const statuses: Status[] = ['waiting', "progress", "done"]
+    const [keyDown, setKeyDown] = useState<"shift" | "ctrl" | "backspace" | null>(null)
 
     const {
         attributes,
@@ -41,6 +40,8 @@ const TodoItem = ({el, status, isOverlay, firstIndex, setFirstIndex}: Props) => 
                     setKeyDown('shift')
                 } else if (e.ctrlKey) {
                     setKeyDown('ctrl')
+                } else if (e.key === "Backspace" || e.key === "Delete") {
+                    setKeyDown('backspace')
                 }
             }
         }
@@ -68,10 +69,14 @@ const TodoItem = ({el, status, isOverlay, firstIndex, setFirstIndex}: Props) => 
         }
     }, []);
 
-    function handleStop(e: React.MouseEvent<HTMLButtonElement | null>) {
-        e.preventDefault()
-        e.stopPropagation()
-    }
+    useEffect(() => {
+        if (keyDown === "backspace") {
+            translateItems.forEach((el) => {
+                dispatch(deleteTodo({id: el.id, status: el.status}))
+                dispatch(deleteAllItems())
+            })
+        }
+    }, [keyDown]);
 
     // НЕ ТРОГАТЬ, ЭТО ДЛЯ ВЫДЕЛЕНИЯ :)
 
@@ -119,8 +124,8 @@ const TodoItem = ({el, status, isOverlay, firstIndex, setFirstIndex}: Props) => 
     }
 
     return (
-        <div id="item"
-             className={`px-4 py-2.5
+        <div
+             className={`px-4 py-1.5 sm:py-2.5 min-h-23 sm:min-h-30 2xl:min-h-35
                 ${el.selected ? 'relative before:content-[\'\'] before:absolute ' +
                  'before:left-0 before:top-0 before:w-full before:h-full ' +
                  'before:bg-blue-400 before:opacity-20 before:z-50 before:pointer-events-none' : ''}`}
@@ -134,7 +139,7 @@ const TodoItem = ({el, status, isOverlay, firstIndex, setFirstIndex}: Props) => 
              }}
         >
             <div className={`
-                    flex flex-col relative shrink-0 px-4 pr-8 py-2 h-25 min-w-10
+                    flex flex-col relative shrink-0 px-4 pr-8 py-2 h-full
                     bg-second rounded-2xl shadowItem item outline-none
                     wrap-break-word ${isDragging ? 'opacity-0' : 'noopacity'}`}
                  onClick={handleSelect}
@@ -157,7 +162,7 @@ const TodoItem = ({el, status, isOverlay, firstIndex, setFirstIndex}: Props) => 
                     </svg>
                 </div>
                 <button className="absolute right-2 top-2 stroke-text"
-                        onClick={() => dispatch(deleteTodo({id: el.id, status}))}
+                        onClick={(e) => {dispatch(deleteTodo({id: el.id, status})); e.stopPropagation()}}
                 >
                     <svg width="20" height="20" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"
                     >
@@ -178,7 +183,7 @@ const TodoItem = ({el, status, isOverlay, firstIndex, setFirstIndex}: Props) => 
                 <button className="absolute right-2 bottom-2" title="Подробнее"
                         onClick={(e) => {
                             dispatch(openChangeModal(el));
-                            handleStop(e)
+                            e.stopPropagation()
                         }}
                 >
                     <svg className="stroke-text fill-text" width="20" height="20" viewBox="0 0 48 48" fill="none"
@@ -199,9 +204,9 @@ const TodoItem = ({el, status, isOverlay, firstIndex, setFirstIndex}: Props) => 
                     </svg>
                 </button>
 
-                <h3 className="text-lg line-clamp-2"
+                <h3 className="text-sm lg:text-lg xl:text-xl 2xl:text-2xl line-clamp-2"
                     title={el.title.length > 25 ? el.title : ''}>{el.title.length > 25 ? el.title.slice(0, 25) + '...' : el.title}</h3>
-                <p className="text-sm leading-[115%] whitespace-pre-wrap line-clamp-3">{el.description}</p>
+                <p className="text-xs lg:text-sm xl:text-md 2xl:text-lg leading-[100%] sm:leading-[115%] whitespace-pre-wrap line-clamp-3">{el.description}</p>
             </div>
         </div>
     );

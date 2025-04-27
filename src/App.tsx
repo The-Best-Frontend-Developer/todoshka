@@ -1,6 +1,6 @@
 import {Outlet} from "react-router-dom";
 import Header from "./Header/Header.tsx";
-import {useAppDispatch} from "./store/myHook.ts";
+import {useAppDispatch, useAppSelector} from "./store/myHook.ts";
 import {addTodo} from "./store/Reducers/todoReducer.ts";
 import MyModal from "./MyModal/MyModal.tsx";
 import {useEffect} from "react";
@@ -8,6 +8,7 @@ import {SelectionSync} from "./SelectionSync.tsx";
 import {deleteAllItems} from "./store/Reducers/translateItemsReducer.ts";
 
 const App = () => {
+    const modal = useAppSelector(state => state.modal)
     const dispatch = useAppDispatch()
 
     const handleAddTodo = () => {
@@ -26,6 +27,14 @@ const App = () => {
     const clearStorage = () => {
         localStorage.clear()
     }
+
+    useEffect(() => {
+        if (modal.createModal || modal.changeModal) {
+            document.body.classList.add('overflow-hidden');
+        } else {
+            document.body.classList.remove('overflow-hidden');
+        }
+    }, [modal.createModal, modal.changeModal]);
 
     useEffect(() => {
         window.addEventListener('click', () => {dispatch(deleteAllItems())})

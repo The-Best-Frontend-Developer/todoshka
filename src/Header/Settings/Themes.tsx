@@ -28,10 +28,10 @@ const Themes = ({show, setShowSettings, setShowThemes}: Props) => {
     return (
         <div
             className={`
-                flex justify-center items-center px-1
-                absolute w-45 h-10 bg-main top-19
-                rounded-l-2xl
-                !duration-400 ease-in-out ${show ? "-translate-x-109" : "-translate-x-64"}
+                justify-center items-center px-1 z-10 lg:-z-10
+                fixed sm:absolute w-45 h-7 sm:h-8 md:h-11 bg-main top-18 md:top-19 right-64
+                rounded-l-2xl lg:flex
+                !duration-400 ease-in-out ${show ? "flex translate-x-20 sm:-translate-x-0" : "hidden translate-x-44 sm:translate-x-64"}
             `}
             onMouseEnter={() => {
                 setShowSettings(true);
@@ -45,14 +45,14 @@ const Themes = ({show, setShowSettings, setShowThemes}: Props) => {
             {themes.map((name) => (
                 <button
                     key={name}
-                    onMouseEnter={() => changeTheme(name as Theme)}
+                    // onMouseEnter={() => changeTheme(name as Theme)}
                     onClick={() => changeTheme(name as Theme, true)}
-                    onMouseLeave={() => changeTheme(currentTheme as Theme)}
+                    // onMouseLeave={() => changeTheme(currentTheme as Theme)}
                     className="flex justify-center items-center w-1/6 h-full p-0"
                 >
                     <div
                         className={`
-                            w-6 h-6 rounded-full border-2
+                            w-5 sm:w-6 aspect-square rounded-full border-1 sm:border-2
                             bg-gradient-to-br 
                             ${name === 'darkContrast' && 'from-black to-yellow-700'}
                             ${name === 'green' && 'from-green-200 to-green-700'}

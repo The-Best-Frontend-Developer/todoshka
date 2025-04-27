@@ -134,7 +134,6 @@ body {
     background-clip: content-box;
 }
 
-
 span, p, h1, h2, h3, h4, h5, h6, div {
     font-family: 'Manrope', sans-serif;
     color: var(--color-text);
@@ -156,8 +155,12 @@ button, a, Link {
     cursor: pointer;
 }
 
+button:focus, a:focus, Link:focus {
+    outline: none;
+}
+
 a, Link, button, svg, span, p, h1, h2, h3, h4, h5, h6, div {
-    transition-duration: 0.2s;
+    transition: 0.2s;
     -webkit-user-select: none;
     user-select: none;
 }
