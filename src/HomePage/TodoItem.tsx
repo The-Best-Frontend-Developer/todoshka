@@ -125,7 +125,7 @@ const TodoItem = ({el, status, isOverlay, firstIndex, setFirstIndex}: Props) => 
 
     return (
         <div
-             className={`px-4 py-1.5 sm:py-2.5 min-h-23 sm:min-h-30 2xl:min-h-35
+             className={`px-4 py-1.5 sm:py-2.5 min-h-23 sm:min-h-30 2xl:min-h-35 touch-none
                 ${el.selected ? 'relative before:content-[\'\'] before:absolute ' +
                  'before:left-0 before:top-0 before:w-full before:h-full ' +
                  'before:bg-blue-400 before:opacity-20 before:z-50 before:pointer-events-none' : ''}`}

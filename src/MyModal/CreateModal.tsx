@@ -57,7 +57,7 @@ const CreateModal = ({status, errors, setErrors}: { status?: Status, errors: str
 
     return (
         <form className="flex flex-col gap-3" ref={formRef}>
-            <h2 className="text-4xl">Создать задачу</h2>
+            <h2 className="text-xl sm:text-2xl md:text-4xl">Создать задачу</h2>
             <button type="button" className="absolute right-1 top-1 stroke-red-500 hover:stroke-red-400"
                     onClick={() => {dispatch(closeModal()); setErrors(null)}}
             >
@@ -78,7 +78,7 @@ const CreateModal = ({status, errors, setErrors}: { status?: Status, errors: str
             </button>
             <input spellCheck={false} required
                    onKeyDown={(e) => handleKeyDown(e)}
-                   className="mt-10 relative placeholder:text-main border-1 border-extra rounded-lg p-2 focus:outline-none"
+                   className="mt-3 sm:mt-10 relative placeholder:text-main border-1 border-extra rounded-lg p-2 focus:outline-none"
                    type="text" value={title}
                    onChange={(e) => setTitle(e.target.value)}
                    onBlur={validation}

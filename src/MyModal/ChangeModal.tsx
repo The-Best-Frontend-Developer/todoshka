@@ -31,7 +31,7 @@ const ChangeModal = ({errors, setErrors}: {errors: string | null, setErrors: Rea
 
     return (
         <form className="flex flex-col gap-3">
-            <h2 className="text-4xl">Изменить задачу</h2>
+            <h2 className="text-xl sm:text-2xl md:text-4xl">Изменить задачу</h2>
             <button type="button" className="absolute right-1 top-1 stroke-red-500 hover:stroke-red-400"
                 onClick={() => {dispatch(closeModal()); setErrors(null)}}
             >
@@ -51,7 +51,7 @@ const ChangeModal = ({errors, setErrors}: {errors: string | null, setErrors: Rea
                 </svg>
             </button>
             <input spellCheck={false} required
-                   className="mt-10 relative placeholder:text-main border-1 border-extra rounded-lg p-2 focus:outline-none"
+                   className="mt-3 sm:mt-10 relative placeholder:text-main border-1 border-extra rounded-lg p-2 focus:outline-none"
                    type="text" value={title} onChange={(e) => setTitle(e.target.value)} onBlur={validation}
                    placeholder="Название"
             />
@@ -74,7 +74,7 @@ const ChangeModal = ({errors, setErrors}: {errors: string | null, setErrors: Rea
                 <option value="done">Выполнено</option>
             </select>
             <button
-                className="border-1 p-2 bg-extra focus:outline-none rounded-xl w-3/4 mx-auto border-text hover:bg-hover"
+                className="border-1 p-2 bg-extra focus:outline-none rounded-xl w-full md:w-3/4 mx-auto border-text hover:bg-hover"
                 type="submit"
                 onClick={(e) => {
                     e.preventDefault();
@@ -90,7 +90,7 @@ const ChangeModal = ({errors, setErrors}: {errors: string | null, setErrors: Rea
                 Подтвердить изменения
             </button>
             <button
-                className="border-1 p-2 bg-extra !text-red-700 hover:bg-red-500 hover:!text-white focus:outline-none rounded-xl w-3/4 mx-auto border-red-500"
+                className="border-1 p-2 bg-extra !text-red-700 hover:bg-red-500 hover:!text-white focus:outline-none rounded-xl w-full md:w-3/4 mx-auto border-red-500"
                 type="button"
                 onClick={() => {
                     dispatch(deleteTodo({id: currentTodo.id, status: currentTodo.status}));
