@@ -30,12 +30,12 @@ const App = () => {
     }
 
     useEffect(() => {
-        if (modal.createModal || modal.changeModal) {
+        if (modal.openedModal !== null) {
             document.body.classList.add('overflow-hidden');
         } else {
             document.body.classList.remove('overflow-hidden');
         }
-    }, [modal.createModal, modal.changeModal]);
+    }, [modal.openedModal]);
 
     useEffect(() => {
         window.addEventListener('click', () => {dispatch(deleteAllItems())})

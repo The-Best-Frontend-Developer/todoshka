@@ -3,6 +3,7 @@ import {deleteTodo, updateTodo} from "../store/Reducers/todoReducer.ts";
 import {closeModal} from "../store/Reducers/modalReducer.ts";
 import {useAppDispatch, useAppSelector} from "../store/myHook.ts";
 import React, {useEffect, useRef, useState} from "react";
+import {addDeletedTodos} from "../store/Reducers/statisticsReducer.ts";
 
 const ChangeModal = ({errors, setErrors}: {errors: string | null, setErrors: React.Dispatch<React.SetStateAction<string | null>> }) => {
     const currentTodo = useAppSelector(state => state.modal.currentTodo)
