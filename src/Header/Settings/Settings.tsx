@@ -14,7 +14,10 @@ const Settings = () => {
 
     useEffect(() => {
         const handleClickOutside = (e: MouseEvent) => {
-            const target = e.target as Node;
+            const target = e.target as HTMLElement;
+            if (target.closest('Link')) {
+                return;
+            }
             if (settingsRef.current && !(settingsRef.current.contains(target) || settings2Ref.current.contains(target))) {
                 setShowSettings(false);
             }
@@ -155,15 +158,37 @@ const Settings = () => {
                         >
                             Цветовые темы
                         </button>
+                        <Link to="/"
+                              className="flex justify-center z-50 items-center gap-1 bg-main py-1 sm:py-2 !text-sm sm:text-md hover:bg-light-hover">
+                            <div className="stroke-text -ml-5 fill-transparent">
+                                <svg width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <polygon points="12,3 2,12 5,12 5,20 10,20 10,14 14,14 14,20 19,20 19,12 22,12"/>
+                                </svg>
+                            </div>
+                            <span>Главная</span>
+                        </Link>
                         <Link to="/statistics"
-                              className="flex justify-center bg-main py-1 sm:py-2 !text-sm sm:text-md hover:bg-light-hover"
+                              className="flex justify-center z-50 items-center gap-1 bg-main py-1 sm:py-2 !text-sm sm:text-md hover:bg-light-hover"
                         >
-                            Статистика
+                            <div className="stroke-text -ml-5 fill-transparent">
+                                <svg width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <polyline points="2,20 8,10 14,14 20,6" strokeWidth="1" fill="none" />
+                                    <polyline points="18,6 20,6 20,8" strokeWidth="1" fill="none" />
+                                </svg>
+                            </div>
+                            <span>Статистика</span>
                         </Link>
                         <Link to="/about"
-                              className="flex justify-center bg-main py-1 sm:py-2 !text-sm sm:text-md hover:bg-light-hover"
+                              className="flex z-50 justify-center items-center gap-1 bg-main py-1 sm:py-2 !text-sm sm:text-md hover:bg-light-hover"
                         >
-                            О сайте
+                            <div className="stroke-text -ml-5 fill-transparent">
+                                <svg width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <circle cx="12" cy="7" r="1" />
+                                    <line x1="12" y1="11" x2="12" y2="17" strokeWidth="2" />
+                                </svg>
+                            </div>
+                            <span>О сайте</span>
                         </Link>
                     </div>
                 </div>
