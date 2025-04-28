@@ -17,7 +17,7 @@ const StatisticsPage = () => {
                     <div
                         className="w-full relative overflow-y-hidden flex items-center flex-col h-[40vh] lg:h-[50vh] border-10 border-solid border-hover rounded-3xl bg-hover">
                         <div className="flex bg-hover p-3 min-h-13 lg:min-h-20 rounded-t-2xl">
-                            <h2 className="text-lg md:text-xl">
+                            <h2 className="text-sm sm:text-md md:text-xl">
                                 {el.name}
                             </h2>
                         </div>
@@ -29,11 +29,11 @@ const StatisticsPage = () => {
                 ))}
             </div>
             <div className="flex flex-col lg:flex-row mt-3 lg:mt-5 gap-1 sm:gap-5">
-                <button className="p-3 bg-extra hover:bg-red-400 text-text rounded-xl w-100"
+                <button className="p-3 bg-extra hover:bg-red-400 text-text rounded-xl w-[80vw] md:w-100"
                         onClick={() => dispatch(openStatisticsModal())} bg-red-400 text-opposite rounded-xl>Сбросить
                     статистику
                 </button>
-                <button className="p-3 bg-extra hover:bg-red-400 text-text rounded-xl w-100"
+                <button className="p-3 bg-extra hover:bg-red-400 text-text rounded-xl w-[80vw] md:w-100"
                         onClick={() => dispatch(openClearModal())}>Сбросить данные
                 </button>
             </div>
