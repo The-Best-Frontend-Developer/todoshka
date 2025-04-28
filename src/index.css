@@ -106,7 +106,7 @@ body {
 }
 
 .shadowItem {
-    box-shadow: 0 0 15px 0px var(--color-text);
+    box-shadow: 0 0 15px 0 var(--color-text);
 }
 
 .modal {

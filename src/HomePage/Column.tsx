@@ -64,7 +64,7 @@ const Column = ({containerRef, contentRef, name, status, index}: Props) => {
                                               strokeLinejoin="round"/>
                                     </svg>
                                 </button>
-                                <button className="stroke-text w-4 sm:w-7 aspect-square" onClick={() => dispatch(moveItemsThunk(statuses[2]))}>
+                                <button className="stroke-text w-4 sm:w-7 aspect-square" onClick={() => {dispatch(moveItemsThunk(statuses[2]))}}>
                                     <svg viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg">
                                         <rect x="0.5" y="0.5" width="24" height="24" rx="5" fill="none"
                                               strokeWidth="2"/>
@@ -133,7 +133,7 @@ const Column = ({containerRef, contentRef, name, status, index}: Props) => {
                 <div className="flex overflow-auto transition-none" ref={contentRef}>
                     <div
                         className={`flex flex-col py-7 px-3 w-full h-full overflow-y-auto overflow-x-hidden scrollbar-custom
-                        ${rotate === 'horizontal' ? 'flex flex-col' : 'grid lg:grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 auto-rows-min'}`}
+                        ${rotate === 'horizontal' ? 'flex flex-col' : `${todos["waiting"].length === 0 ? '' : 'grid lg:grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3'} auto-rows-min`}`}
                     >
                         <Todos status={status} index={index}/>
                     </div>

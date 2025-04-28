@@ -2,6 +2,7 @@ import Themes from "./Themes.tsx";
 import {useEffect, useRef, useState} from "react";
 import {useAppDispatch} from "../../store/myHook.ts";
 import {changeRotate} from "../../store/Reducers/rotateReducer.ts";
+import {Link} from "react-router-dom";
 
 const Settings = () => {
     const dispatch = useAppDispatch()
@@ -62,15 +63,45 @@ const Settings = () => {
                     <div className='flex flex-col'>
                         <button onMouseEnter={() => setIsShowThemes(true)}
                                 onMouseLeave={() => setIsShowThemes(false)}
-                                className={`
+                                className={`flex justify-center
                                 py-2 border-l-2 -ml-0.5 hover:bg-light-hover relative !text-lg
                                 ${isShowThemes ? 'bg-light-hover' : 'bg-main'}`
                                 }
                         >
-                            Цветовые темы
+                            <span>Цветовые темы</span>
                         </button>
-                        <button className="bg-main py-2 !text-lg hover:bg-light-hover">Статистика</button>
-                        <button className="bg-main py-2 !text-lg hover:bg-light-hover">О сайте</button>
+                        <Link to="/"
+                              className="flex justify-center items-center gap-1 bg-main py-1 sm:py-2 !text-lg hover:bg-light-hover">
+                            <div className="stroke-text -ml-5 fill-transparent">
+                                <svg width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <polygon points="12,3 2,12 5,12 5,20 10,20 10,14 14,14 14,20 19,20 19,12 22,12"/>
+                                </svg>
+                            </div>
+                            <span>Главная</span>
+                        </Link>
+                        <Link to="/statistics"
+                              className="flex justify-center items-center gap-1 bg-main py-1 sm:py-2 !text-lg hover:bg-light-hover"
+                        >
+                            <div className="stroke-text -ml-5 fill-transparent">
+                                <svg width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <polyline points="2,20 8,10 14,14 20,6" strokeWidth="1" fill="none" />
+                                    <polyline points="18,6 20,6 20,8" strokeWidth="1" fill="none" />
+                                </svg>
+                            </div>
+                            <span>Статистика</span>
+                        </Link>
+                        <Link to="/about"
+                              className="flex justify-center items-center gap-1 bg-main py-1 sm:py-2 !text-lg hover:bg-light-hover"
+                        >
+                            <div className="stroke-text -ml-5 fill-transparent">
+                                <svg width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <circle cx="12" cy="7" r="1" />
+                                    <line x1="12" y1="11" x2="12" y2="17" strokeWidth="2" />
+                                </svg>
+                            </div>
+                            <span>О сайте</span>
+                        </Link>
                         <div
                             className={`flex-col justify-between bg-main sm:hidden lg:flex ${showRotate ? 'h-17' : 'h-11'} pt-2 hover:bg-light-hover overflow-hidden`}
                             onMouseEnter={() => setShowRotate(true)} onMouseLeave={() => setShowRotate(false)}
@@ -124,12 +155,16 @@ const Settings = () => {
                         >
                             Цветовые темы
                         </button>
-                        <button
-                            className="bg-main py-1 sm:py-2 !text-sm sm:text-md hover:bg-light-hover">Статистика
-                        </button>
-                        <button className="bg-main py-1 sm:py-2 !text-sm sm:text-md hover:bg-light-hover">О
-                            сайте
-                        </button>
+                        <Link to="/statistics"
+                              className="flex justify-center bg-main py-1 sm:py-2 !text-sm sm:text-md hover:bg-light-hover"
+                        >
+                            Статистика
+                        </Link>
+                        <Link to="/about"
+                              className="flex justify-center bg-main py-1 sm:py-2 !text-sm sm:text-md hover:bg-light-hover"
+                        >
+                            О сайте
+                        </Link>
                     </div>
                 </div>
             </div>

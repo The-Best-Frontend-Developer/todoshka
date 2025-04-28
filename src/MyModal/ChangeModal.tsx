@@ -94,6 +94,7 @@ const ChangeModal = ({errors, setErrors}: {errors: string | null, setErrors: Rea
                 type="button"
                 onClick={() => {
                     dispatch(deleteTodo({id: currentTodo.id, status: currentTodo.status}));
+                    dispatch(addDeletedTodos());
                     dispatch(closeModal())
                 }}
             >

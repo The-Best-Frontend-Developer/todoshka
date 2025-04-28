@@ -3,6 +3,7 @@ import React, {useEffect, useRef, useState} from "react";
 import {addTodo} from "../store/Reducers/todoReducer.ts";
 import {useAppDispatch} from "../store/myHook.ts";
 import {closeModal} from "../store/Reducers/modalReducer.ts";
+import {addCreatedTodos} from "../store/Reducers/statisticsReducer.ts";
 
 const CreateModal = ({status, errors, setErrors}: { status?: Status, errors: string | null, setErrors: React.Dispatch<React.SetStateAction<string | null>> }) => {
     const dispatch = useAppDispatch()
@@ -50,6 +51,7 @@ const CreateModal = ({status, errors, setErrors}: { status?: Status, errors: str
 
             if (isValid) {
                 dispatch(addTodo({id: Date.now(), title, description, status: selectedValue}));
+                dispatch(addCreatedTodos());
                 dispatch(closeModal());
             }
         }
@@ -111,6 +113,7 @@ const CreateModal = ({status, errors, setErrors}: { status?: Status, errors: str
                         e.preventDefault();
                         if (!errors && isTouched) {
                             dispatch(addTodo({id: Date.now(), title, description, status: selectedValue}));
+                            dispatch(addCreatedTodos())
                             dispatch(closeModal());
                         } else { validation() }
                     }}

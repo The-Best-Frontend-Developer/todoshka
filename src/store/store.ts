@@ -7,6 +7,7 @@ import {ThunkAction} from '@reduxjs/toolkit';
 import {Action} from 'redux';
 import FirstLastElementIndexesReducer from "./Reducers/FirstLastElementIndexesReducer.ts";
 import rotateReducer from "./Reducers/rotateReducer.ts";
+import statisticsReducer from "./Reducers/statisticsReducer.ts";
 
 export const store = configureStore({
     reducer: {
@@ -15,7 +16,8 @@ export const store = configureStore({
         activeItem: activeItemReducer,
         translateItems: translateItemsReducer,
         indexes: FirstLastElementIndexesReducer,
-        rotate: rotateReducer
+        rotate: rotateReducer,
+        statistics: statisticsReducer,
     }
 })
 

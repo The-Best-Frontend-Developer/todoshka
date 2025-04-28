@@ -5,6 +5,7 @@ import {Status, TypeTodo} from "../TypeTodo.ts";
 import {useSortable} from "@dnd-kit/sortable";
 import React, {useEffect, useState} from "react";
 import {addItem, deleteAllItems, deleteItem} from "../store/Reducers/translateItemsReducer.ts";
+import {addDeletedTodos} from "../store/Reducers/statisticsReducer.ts";
 
 type Props = {
     el: TypeTodo,
@@ -73,6 +74,7 @@ const TodoItem = ({el, status, isOverlay, firstIndex, setFirstIndex}: Props) => 
         if (keyDown === "backspace") {
             translateItems.forEach((el) => {
                 dispatch(deleteTodo({id: el.id, status: el.status}))
+                dispatch(addDeletedTodos())
                 dispatch(deleteAllItems())
             })
         }
@@ -162,7 +164,12 @@ const TodoItem = ({el, status, isOverlay, firstIndex, setFirstIndex}: Props) => 
                     </svg>
                 </div>
                 <button className="absolute right-2 top-2 stroke-text"
-                        onClick={(e) => {dispatch(deleteTodo({id: el.id, status})); e.stopPropagation()}}
+                        onClick={(e) => {
+                            dispatch(deleteTodo({id: el.id, status}));
+                            dispatch(addDeletedTodos());
+                            dispatch(deleteAllItems());
+                            e.stopPropagation()
+                        }}
                 >
                     <svg width="20" height="20" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"
                     >

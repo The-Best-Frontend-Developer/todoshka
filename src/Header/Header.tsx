@@ -4,11 +4,11 @@ import Settings from "./Settings/Settings.tsx";
 const Header = () => {
 
     return (
-        <header className="bg-main flex px-5 sm:px-10 md:px-15 items-center h-15 relative gap-5 sm:gap-10 shadow-lg shadow-hover">
+        <header className="bg-main flex px-5 sm:px-10 md:px-15 justify-between items-center h-15 relative gap-5 sm:gap-10 shadow-lg shadow-hover">
             <Link to='/' className='w-10 sm:w-15 bg-gray-300 rounded-2xl p-1'>
                 <img src='./image.png' alt='логотип'/>
             </Link>
-            <h2 className="text-xl md:text-4xl text-text mx-auto noneSelect">Список дел</h2>
+            <Link to="/"><h2 className="text-xl md:text-4xl text-text noneSelect">Список дел</h2></Link>
             <button className="aspect-square w-5.5 sm:w-7">
                 <svg className="fill-text w-full h-full" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 50 50">
                     <path

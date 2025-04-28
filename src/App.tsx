@@ -6,6 +6,7 @@ import MyModal from "./MyModal/MyModal.tsx";
 import {useEffect} from "react";
 import {SelectionSync} from "./SelectionSync.tsx";
 import {deleteAllItems} from "./store/Reducers/translateItemsReducer.ts";
+import {addCreatedTodos} from "./store/Reducers/statisticsReducer.ts";
 
 const App = () => {
     const modal = useAppSelector(state => state.modal)
@@ -21,7 +22,7 @@ const App = () => {
                 'Описание Описание Описание Описание Описание Описание Описание ',
             status: 'waiting'
         }))
-
+        dispatch(addCreatedTodos())
     }
 
     const clearStorage = () => {
@@ -44,8 +45,8 @@ const App = () => {
         <>
             <Header/>
             <Outlet/>
-            <button onClick={clearStorage} className="absolute hover:bg-hover top-7 bg-extra p-3 rounded-2xl">очистить хранилище</button>
-            <button onClick={handleAddTodo} className="absolute hover:bg-hover top-20 bg-extra p-3 rounded-2xl">Добавить todo</button>
+            <button onClick={clearStorage} className="absolute hover:bg-hover top-8 bg-extra p-1 rounded-2xl">очистить хранилище</button>
+            <button onClick={handleAddTodo} className="absolute hover:bg-hover top-18 bg-extra p-1 rounded-2xl">Добавить todo</button>
             <MyModal/>
             <SelectionSync/>
         </>
