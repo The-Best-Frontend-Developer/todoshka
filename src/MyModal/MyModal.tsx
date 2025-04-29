@@ -1,15 +1,47 @@
-import React, { useState } from 'react';
-import { useAppSelector, useAppDispatch } from '../store/myHook.ts';
-import { closeModal } from '../store/Reducers/modalReducer.ts';
+import React, {useEffect, useState} from 'react';
+import {useAppDispatch, useAppSelector} from '../store/myHook.ts';
+import {closeModal} from '../store/Reducers/modalReducer.ts';
 import CreateModal from './CreateModal.tsx';
 import ChangeModal from './ChangeModal.tsx';
 import AcceptDeleteModal from './AcceptDeleteModal.tsx';
+import {deleteAllItems} from "../store/Reducers/translateItemsReducer.ts";
 
 const MyModal = () => {
     const modal = useAppSelector(state => state.modal);
     const dispatch = useAppDispatch();
     const darkTheme = document.documentElement.className === 'dark';
     const [errors, setErrors] = useState<string | null>(null);
+    const [keyDown, setKeyDown] = useState<"esc" | null>(null)
+
+    useEffect(() => {
+        function handleKeyDown(e: KeyboardEvent) {
+            if ((e.target as HTMLElement).tagName !== 'INPUT' &&
+                (e.target as HTMLElement).tagName !== 'TEXTAREA') {
+                if (e.key === "Escape") {
+                    setKeyDown('esc')
+                }
+            }
+        }
+
+        function handleKeyUp() {
+            setKeyDown(null)
+        }
+
+        document.addEventListener('keydown', handleKeyDown)
+        document.addEventListener('keyup', handleKeyUp)
+
+        return () => {
+            document.removeEventListener('keydown', handleKeyDown)
+            document.removeEventListener('keyup', handleKeyUp)
+        }
+    }, []);
+
+    useEffect(() => {
+        if (keyDown === "esc") {
+            dispatch(deleteAllItems())
+            dispatch(closeModal())
+        }
+    }, [keyDown]);
 
     return (
         modal.openedModal && (
@@ -22,7 +54,10 @@ const MyModal = () => {
                     onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}
                 >
                     <button type="button" className="absolute right-1 top-1 stroke-red-500 hover:stroke-red-400"
-                            onClick={() => {dispatch(closeModal()); setErrors(null)}}
+                            onClick={() => {
+                                dispatch(closeModal());
+                                setErrors(null)
+                            }}
                     >
                         <svg width="35" height="35" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"
                         >
@@ -39,9 +74,11 @@ const MyModal = () => {
                             <line x1="32" y1="16" x2="16" y2="32" strokeWidth="1"/>
                         </svg>
                     </button>
-                    {(modal.openedModal === "create") && <CreateModal status={modal.status} errors={errors} setErrors={setErrors}/>}
-                    {(modal.openedModal === "change") && <ChangeModal errors={errors} setErrors={setErrors} />}
-                    {(modal.openedModal === "clear" || modal.openedModal === "statistics") && <AcceptDeleteModal accept={modal.openedModal}/>}
+                    {(modal.openedModal === "create") &&
+                        <CreateModal status={modal.status} errors={errors} setErrors={setErrors}/>}
+                    {(modal.openedModal === "change") && <ChangeModal errors={errors} setErrors={setErrors}/>}
+                    {(modal.openedModal === "clear" || modal.openedModal === "statistics") &&
+                        <AcceptDeleteModal accept={modal.openedModal}/>}
                 </div>
             </div>
         )

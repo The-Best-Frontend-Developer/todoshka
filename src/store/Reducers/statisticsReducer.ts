@@ -27,7 +27,7 @@ const statisticsReducer = createSlice({
             localStorage.setItem("statistics", JSON.stringify(state))
         },
         deleteStatistics: () => {
-            return {createdTodos: 0, doneTodos: 0, deletedTodos: 0}
+            localStorage.removeItem("statistics")
         }
     }
 })
