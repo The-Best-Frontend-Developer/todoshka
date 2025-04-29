@@ -45,16 +45,14 @@ const Themes = ({show, setShowSettings, setShowThemes}: Props) => {
             {themes.map((name) => (
                 <button
                     key={name}
-                    // onMouseEnter={() => changeTheme(name as Theme)}
                     onClick={() => changeTheme(name as Theme, true)}
-                    // onMouseLeave={() => changeTheme(currentTheme as Theme)}
                     className="flex justify-center items-center w-1/6 h-full p-0"
                 >
                     <div
                         className={`
                             w-5 sm:w-6 aspect-square rounded-full border-1 sm:border-2
                             bg-gradient-to-br 
-                            ${name === 'darkContrast' && 'from-black to-yellow-700'}
+                            ${name === 'darkContrast' && 'from-yellow-600 to-black'}
                             ${name === 'green' && 'from-green-200 to-green-700'}
                             ${name === 'blue' && 'from-blue-300 to-blue-800'}
                             ${name === 'dark' && 'from-gray-700 to-black'}

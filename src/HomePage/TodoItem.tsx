@@ -1,4 +1,4 @@
-import {openChangeModal} from "../store/Reducers/modalReducer.ts";
+import {closeModal, openChangeModal} from "../store/Reducers/modalReducer.ts";
 import {deleteTodo} from "../store/Reducers/todoReducer.ts";
 import {useAppDispatch, useAppSelector} from "../store/myHook.ts";
 import {Status, TypeTodo} from "../TypeTodo.ts";
@@ -19,7 +19,7 @@ const TodoItem = ({el, status, isOverlay, firstIndex, setFirstIndex}: Props) => 
     const todos = useAppSelector(state => state.todo)
     const translateItems = useAppSelector(state => state.translateItems)
     const dispatch = useAppDispatch()
-    const [keyDown, setKeyDown] = useState<"shift" | "ctrl" | "backspace" | null>(null)
+    const [keyDown, setKeyDown] = useState<"shift" | "ctrl" | "backspace" | "esc" | null>(null)
 
     const {
         attributes,
@@ -43,6 +43,8 @@ const TodoItem = ({el, status, isOverlay, firstIndex, setFirstIndex}: Props) => 
                     setKeyDown('ctrl')
                 } else if (e.key === "Backspace" || e.key === "Delete") {
                     setKeyDown('backspace')
+                } else if (e.key === "Escape") {
+                    setKeyDown('esc')
                 }
             }
         }
@@ -77,6 +79,9 @@ const TodoItem = ({el, status, isOverlay, firstIndex, setFirstIndex}: Props) => 
                 dispatch(addDeletedTodos())
                 dispatch(deleteAllItems())
             })
+        } else if (keyDown === "esc") {
+            dispatch(deleteAllItems())
+            dispatch(closeModal())
         }
     }, [keyDown]);
 

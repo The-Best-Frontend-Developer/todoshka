@@ -2,7 +2,7 @@ import Themes from "./Themes.tsx";
 import {useEffect, useRef, useState} from "react";
 import {useAppDispatch} from "../../store/myHook.ts";
 import {changeRotate} from "../../store/Reducers/rotateReducer.ts";
-import {Link} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 
 const Settings = () => {
     const dispatch = useAppDispatch()
@@ -11,6 +11,7 @@ const Settings = () => {
     const [showRotate, setShowRotate] = useState(false)
     const settingsRef = useRef<HTMLDivElement>(null!);
     const settings2Ref = useRef<HTMLDivElement>(null!);
+    const page = useLocation()
 
     useEffect(() => {
         const handleClickOutside = (e: MouseEvent) => {
@@ -105,6 +106,7 @@ const Settings = () => {
                             </div>
                             <span>О сайте</span>
                         </Link>
+                        { page.pathname === "/" &&
                         <div
                             className={`flex-col justify-between bg-main sm:hidden lg:flex ${showRotate ? 'h-17' : 'h-11'} pt-2 hover:bg-light-hover overflow-hidden`}
                             onMouseEnter={() => setShowRotate(true)} onMouseLeave={() => setShowRotate(false)}
@@ -124,7 +126,7 @@ const Settings = () => {
                                     <span className="text-sm">Вертикальная</span>
                                 </button>
                             </div>
-                        </div>
+                        </div>}
                     </div>
                 </div>
             </div>

@@ -47,33 +47,33 @@
 }
 
 .green {
-    --main-color: #a8e27d;
-    --second-color: #7cd14f;
+    --main-color: #d0e8b8;
+    --second-color: #a8dd8f;
     --text-color: #2d4e2d;
-    --extra-color: #7cd94c;
-    --hover-color: #72c944;
-    --light-hover: #97d76d;
+    --extra-color: #a8e48f;
+    --hover-color: #9bd482;
+    --light-hover: #b4de9b;
     --opposite: white;
 }
 
 .blue {
-    --main-color: #a8c7e6;
-    --second-color: #77a3d1;
+    --main-color: #c5d9ed;
+    --second-color: #a3c2e0;
     --text-color: #2d3e50;
-    --extra-color: #6d9ccf;
-    --hover-color: #638fbf;
-    --light-hover: #97b9db;
+    --extra-color: #a3c7e5;
+    --hover-color: #8fb3d1;
+    --light-hover: #94b3d1;
     --opposite: white;
 }
 
 .vanilla {
-    --main-color: #f0d899;
-    --second-color: #d4af6c;
-    --text-color: #3c3c3c;
-    --extra-color: #e3c184;
-    --hover-color: #d9b575;
-    --light-hover: #cfa763;
-    --opposite: white;
+    --main-color: #f2dfba;
+    --second-color: #d8b983;
+    --text-color: #4e4e4e;
+    --extra-color: #e7cfa4;
+    --hover-color: #d2b686;
+    --light-hover: #c6a974;
+    --opposite: #ffffff;
 }
 
 

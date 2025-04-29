@@ -1,12 +1,13 @@
 import {Status} from "../TypeTodo.ts";
 import React, {useEffect, useRef, useState} from "react";
 import {addTodo} from "../store/Reducers/todoReducer.ts";
-import {useAppDispatch} from "../store/myHook.ts";
+import {useAppDispatch, useAppSelector} from "../store/myHook.ts";
 import {closeModal} from "../store/Reducers/modalReducer.ts";
 import {addCreatedTodos} from "../store/Reducers/statisticsReducer.ts";
 
 const CreateModal = ({status, errors, setErrors}: { status?: Status, errors: string | null, setErrors: React.Dispatch<React.SetStateAction<string | null>> }) => {
     const dispatch = useAppDispatch()
+    const modalState = useAppSelector(state => state.modal)
 
     const [title, setTitle] = useState('')
     const [description, setDescription] = useState('')
@@ -15,6 +16,7 @@ const CreateModal = ({status, errors, setErrors}: { status?: Status, errors: str
     const formRef = useRef<HTMLFormElement | null>(null)
 
     const textareaRef = useRef<HTMLTextAreaElement>(null!)
+    const inputRef = useRef<HTMLInputElement>(null!)
 
     useEffect(() => {
         if (textareaRef.current) {
@@ -22,6 +24,12 @@ const CreateModal = ({status, errors, setErrors}: { status?: Status, errors: str
             textareaRef.current.style.height = textareaRef.current.scrollHeight + 'px' // авторазмер
         }
     }, [description])
+
+    useEffect(() => {
+        if (modalState.openedModal === "create" && inputRef.current) {
+            inputRef.current.focus(); // Фокус при открытии
+        }
+    }, [modalState]);
 
     useEffect(() => {
         if (isTouched) {
@@ -58,7 +66,7 @@ const CreateModal = ({status, errors, setErrors}: { status?: Status, errors: str
     }
 
     return (
-        <form className="flex flex-col gap-3" ref={formRef}>
+        <form className="flex flex-col gap-3" ref={formRef} noValidate>
             <h2 className="text-xl sm:text-2xl md:text-4xl">Создать задачу</h2>
             <button type="button" className="absolute right-1 top-1 stroke-red-500 hover:stroke-red-400"
                     onClick={() => {dispatch(closeModal()); setErrors(null)}}
@@ -79,6 +87,7 @@ const CreateModal = ({status, errors, setErrors}: { status?: Status, errors: str
                 </svg>
             </button>
             <input spellCheck={false} required
+                   ref={inputRef}
                    onKeyDown={(e) => handleKeyDown(e)}
                    className="mt-3 sm:mt-10 relative placeholder:text-main border-1 border-extra rounded-lg p-2 focus:outline-none"
                    type="text" value={title}

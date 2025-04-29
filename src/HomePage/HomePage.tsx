@@ -94,7 +94,7 @@ const HomePage = () => {
             >
                 <div
                     ref={rootRef}
-                    className={`grid ${rotate === "vertical" || (window.innerHeight / window.innerWidth > 1.1 && window.innerHeight / window.innerWidth < 1.7) ? 'lg:grid-rows-3 lg:grid-cols-1' : 'lg:grid-cols-3 lg:grid-rows-1'} grid-rows-3 grid-cols-1 justify-center gap-4 px-[clamp(1.875rem,_1.1607rem_+3.5714vw,_4.375rem)] py-5`}
+                    className={`grid ${rotate === "vertical" || (window.innerHeight / window.innerWidth > 1.1 && window.innerHeight / window.innerWidth < 1.7) ? 'lg:grid-rows-3 lg:grid-cols-1' : 'lg:grid-cols-3 lg:grid-rows-1'} grid-rows-3 grid-cols-1 justify-center gap-4 px-[clamp(1.875rem,_1.1607rem_+3.5714vw,_4.375rem)] mx-auto max-w-625 py-5`}
                 >
                     {containerRefs.map((ref, i: number) => <Column containerRef={ref} contentRef={contentRefs[i]}
                                                                    key={Math.random()} name={names[i]}
