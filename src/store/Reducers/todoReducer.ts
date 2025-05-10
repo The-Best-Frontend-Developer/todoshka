@@ -31,26 +31,21 @@ const todoReducer = createSlice({
             const {id, status} = action.payload.newTodo;
             const {oldStatus} = action.payload
 
-            if (!status) return; // Если статус не указан нигде - выходим
+            if (!status) return;
 
-            // Если статус изменился
             if (oldStatus !== status) {
-                // Удаляем из старого статуса
                 state[oldStatus] = state[oldStatus].filter(todo => todo.id !== id);
                 localStorage.setItem(oldStatus, JSON.stringify(state[oldStatus]));
             }
 
-            // Обновляем или добавляем в новый статус
             const existingIndex = state[status].findIndex(todo => todo.id === id);
 
             if (existingIndex >= 0) {
-                // Обновляем существующую задачу
                 state[status][existingIndex] = {
                     ...state[status][existingIndex],
                     ...action.payload.newTodo
                 };
             } else {
-                // Добавляем как новую задачу (если статус изменился)
                 state[status].push({
                     ...action.payload.newTodo
                 });
@@ -68,8 +63,9 @@ const todoReducer = createSlice({
                 const toIndex = list.findIndex(todo => todo.id === to);
 
                 if (fromIndex !== -1 && toIndex !== -1) {
-                    const [moved] = list.splice(fromIndex, 1); // Удаляем элемент из исходного места
-                    list.splice(toIndex, 0, moved); // Вставляем элемент в новое место
+                    const [moved] = list.splice(fromIndex, 1);
+                    list.splice(toIndex, 0, moved);
+                    localStorage.setItem(status, JSON.stringify(state[status]));
                     break;
                 }
             }
@@ -82,9 +78,43 @@ const todoReducer = createSlice({
             if (todo) {
                 todo.selected = action.payload.selected;
             }
+        },
+        setTodoAnimated: (state, action: PayloadAction<number>) => {
+            const allTodos = [...state.waiting, ...state.progress, ...state.done]
+            const currentTodo = allTodos.find((el) => el.id === action.payload);
+            if (currentTodo) {currentTodo.animated = true}
+        },
+        clearTodoAnimated: (state, action: PayloadAction<number>) => {
+            const allTodos = [...state.waiting, ...state.progress, ...state.done]
+            const currentTodo = allTodos.find((el) => el.id === action.payload)
+            if (currentTodo) {
+                currentTodo.animated = false;
+            }
+        },
+        deleteTodoTag: (state, action: PayloadAction<{ todoId: number, tagId: number }>) => {
+            const { todoId, tagId } = action.payload;
+            const statuses: (keyof InitialState)[] = ['waiting', 'progress', 'done'];
+
+            for (const status of statuses) {
+                const todoIndex = state[status].findIndex(el => el.id === todoId);
+                if (todoIndex !== -1) {
+                    const newTags = state[status][todoIndex].tags.filter(tag => tag.id !== tagId);
+                    const updatedTodo = {
+                        ...state[status][todoIndex],
+                        tags: newTags
+                    };
+                    state[status] = [
+                        ...state[status].slice(0, todoIndex),
+                        updatedTodo,
+                        ...state[status].slice(todoIndex + 1)
+                    ];
+                    localStorage.setItem(status, JSON.stringify(state[status]));
+                    break;
+                }
+            }
         }
     }
 })
 
-export const {addTodo, updateTodo, deleteTodo, moveTodo, setTodoSelected} = todoReducer.actions;
+export const {addTodo, updateTodo, deleteTodo, moveTodo, setTodoSelected, setTodoAnimated, clearTodoAnimated, deleteTodoTag} = todoReducer.actions;
 export default todoReducer.reducer

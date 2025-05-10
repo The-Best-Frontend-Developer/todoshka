@@ -1,4 +1,4 @@
-import {createSlice} from "@reduxjs/toolkit";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 type InitialState = {createdTodos: number, doneTodos: number, deletedTodos: number}
 const savedStatistics = localStorage.getItem("statistics");
@@ -14,13 +14,8 @@ const statisticsReducer = createSlice({
             state.createdTodos += 1
             localStorage.setItem("statistics", JSON.stringify(state))
         },
-        addDoneTodos: (state) => {
-            state.doneTodos += 1
-            localStorage.setItem("statistics", JSON.stringify(state))
-        },
-        deleteDoneTodos: (state) => {
-            state.doneTodos -= 1
-            localStorage.setItem("statistics", JSON.stringify(state))
+        updateDoneTodos: (state, action: PayloadAction<number>) => {
+            state.doneTodos = action.payload
         },
         addDeletedTodos: (state) => {
             state.deletedTodos += 1
@@ -32,5 +27,5 @@ const statisticsReducer = createSlice({
     }
 })
 
-export const {addCreatedTodos, addDoneTodos, addDeletedTodos, deleteDoneTodos, deleteStatistics} = statisticsReducer.actions;
+export const {addCreatedTodos, addDeletedTodos, deleteStatistics, updateDoneTodos} = statisticsReducer.actions;
 export default statisticsReducer.reducer;

@@ -49,7 +49,7 @@ const HomePage = () => {
                     }
                 };
 
-                updateRootHeight(); // первичная установка
+                updateRootHeight();
                 window.addEventListener('resize', updateRootHeight);
 
                 return () => {
@@ -60,20 +60,16 @@ const HomePage = () => {
         ;
 
         const sensors = useSensors(
-            useSensor(PointerSensor),  // Для десктопа
-            useSensor(TouchSensor)     // Для мобильных устройств
+            useSensor(PointerSensor),
+            useSensor(TouchSensor)
         );
 
         const handleDragEnd = (event: DragEndEvent) => {
             const {active, over} = event;
 
-            // Проверяем, что элемент был перемещен в другой статус
             if (over && active.id !== over.id) {
-                // Ищем индекс перемещенного элемента и индекса куда его перетащили
-                const from = Number(active.id); // ID элемента, который перетаскиваем
-                const to = Number(over.id); // ID элемента, на который перетаскиваем
-
-                // Диспатчим экшен для обновления порядка
+                const from = Number(active.id);
+                const to = Number(over.id);
                 dispatch(moveTodo({from, to}));
             }
         };

@@ -24,10 +24,8 @@ const Settings = () => {
             }
         };
 
-        // Добавляем обработчик события 'click' на весь документ
         window.addEventListener('click', handleClickOutside);
 
-        // Убираем обработчик при размонтировании компонента
         return () => {
             window.removeEventListener('click', handleClickOutside);
         };

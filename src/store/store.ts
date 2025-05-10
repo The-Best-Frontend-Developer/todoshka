@@ -8,6 +8,7 @@ import {Action} from 'redux';
 import FirstLastElementIndexesReducer from "./Reducers/FirstLastElementIndexesReducer.ts";
 import rotateReducer from "./Reducers/rotateReducer.ts";
 import statisticsReducer from "./Reducers/statisticsReducer.ts";
+import tagsReducer from "./Reducers/tagsReducer.tsx";
 
 export const store = configureStore({
     reducer: {
@@ -18,6 +19,7 @@ export const store = configureStore({
         indexes: FirstLastElementIndexesReducer,
         rotate: rotateReducer,
         statistics: statisticsReducer,
+        tags: tagsReducer,
     }
 })
 

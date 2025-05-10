@@ -5,5 +5,12 @@ export type TypeTodo = {
     title: string,
     description: string,
     status: Status,
-    selected?: boolean
+    selected?: boolean,
+    animated?: boolean,
+    tags: Tag[],
+}
+
+export type Tag = {
+    id: number,
+    name: string
 }

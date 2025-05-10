@@ -1,9 +1,9 @@
 import {openChangeModal} from "../store/Reducers/modalReducer.ts";
-import {deleteTodo} from "../store/Reducers/todoReducer.ts";
+import {deleteTodo, deleteTodoTag} from "../store/Reducers/todoReducer.ts";
 import {useAppDispatch, useAppSelector} from "../store/myHook.ts";
 import {Status, TypeTodo} from "../TypeTodo.ts";
 import {useSortable} from "@dnd-kit/sortable";
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {addItem, deleteAllItems, deleteItem} from "../store/Reducers/translateItemsReducer.ts";
 import {addDeletedTodos} from "../store/Reducers/statisticsReducer.ts";
 
@@ -20,6 +20,12 @@ const TodoItem = ({el, status, isOverlay, firstIndex, setFirstIndex}: Props) => 
     const translateItems = useAppSelector(state => state.translateItems)
     const dispatch = useAppDispatch()
     const [keyDown, setKeyDown] = useState<"shift" | "ctrl" | "backspace" | null>(null)
+    const refNode = useRef<HTMLDivElement | null>(null);
+
+    const combinedRef = (node: HTMLDivElement | null) => {
+        setNodeRef(node);
+        refNode.current = node;
+    };
 
     const {
         attributes,
@@ -52,7 +58,7 @@ const TodoItem = ({el, status, isOverlay, firstIndex, setFirstIndex}: Props) => 
         }
 
         function handleClick(e: MouseEvent) {
-            const isTodo = (e.target as HTMLElement).closest('.todo-item'); // заменяй на свой класс
+            const isTodo = (e.target as HTMLElement).closest('.todo-item');
 
             if (!isTodo) {
                 setFirstIndex?.(null);
@@ -117,28 +123,35 @@ const TodoItem = ({el, status, isOverlay, firstIndex, setFirstIndex}: Props) => 
         } else if (keyDown === 'ctrl') {
             if (todos[status][current].status === translateItems[0].status) {
                 if (exists) {
-                    dispatch(deleteItem({id: el.id})); // Убираем элемент
+                    dispatch(deleteItem({id: el.id}));
                 } else {
-                    dispatch(addItem(el)); // Добавляем элемент
+                    dispatch(addItem(el));
                 }
             }
         }
     }
 
+    useEffect(() => {
+        if (el.animated && refNode) {
+            refNode.current?.scrollIntoView({behavior: "smooth", block: "center"});
+        }
+    }, [el.animated]);
+
     return (
         <div
-             className={`px-4 py-1.5 sm:py-2.5 min-h-23 h-23 sm:min-h-30 2xl:min-h-35
+            className={`px-4 py-1.5 sm:py-2.5 min-h-23 h-23 sm:min-h-30 2xl:min-h-35
+                ${el.animated ? 'animated relative' : ''}
                 ${el.selected ? 'relative before:content-[\'\'] before:absolute ' +
-                 'before:left-0 before:top-0 before:w-full before:h-full ' +
-                 'before:bg-blue-400 before:opacity-20 before:z-50 before:pointer-events-none' : ''}`}
-             onClick={(e) => {
-                 e.stopPropagation()
-             }}
-             ref={setNodeRef}
-             style={{
-                 transform: transform ? `translate(${transform.x}px, ${transform.y}px)` : undefined,
-                 transition: isOverlay ? 'none' : transition,
-             }}
+                'before:left-0 before:top-0 before:w-full before:h-full ' +
+                'before:bg-blue-400 before:opacity-20 before:z-50 before:pointer-events-none' : ''}`}
+            onClick={(e) => {
+                e.stopPropagation()
+            }}
+            ref={combinedRef}
+            style={{
+                transform: transform ? `translate(${transform.x}px, ${transform.y}px)` : undefined,
+                transition: isOverlay ? 'none' : transition,
+            }}
         >
             <div className={`
                     flex flex-col relative shrink-0 px-4 pr-8 py-2 h-full
@@ -147,7 +160,7 @@ const TodoItem = ({el, status, isOverlay, firstIndex, setFirstIndex}: Props) => 
                  onClick={handleSelect}
             >
                 <div
-                    className={`absolute -left-6.5 top-[calc(50%_-_18px)] touch-none fill-text ${isOverlay ? 'opacity-0 cursor-grabbing' : 'cursor-grab noopacity'}`}
+                    className={`absolute -left-6.5 focus:outline-none top-[calc(50%_-_18px)] touch-none fill-text ${isOverlay ? 'opacity-0 cursor-grabbing' : 'cursor-grab noopacity'}`}
                     {...listeners} {...attributes}
                 >
                     <svg version="1.1" width="36" height="36" viewBox="0 0 36 36"
@@ -163,57 +176,82 @@ const TodoItem = ({el, status, isOverlay, firstIndex, setFirstIndex}: Props) => 
                         <rect x="0" y="0" width="36" height="36" fillOpacity="0"/>
                     </svg>
                 </div>
-                <button className="absolute right-2 top-2 stroke-text"
-                        onClick={(e) => {
-                            dispatch(deleteTodo({id: el.id, status}));
-                            dispatch(addDeletedTodos());
-                            dispatch(deleteAllItems());
-                            e.stopPropagation()
-                        }}
-                >
-                    <svg width="20" height="20" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"
+                <div className="flex flex-col h-full">
+                    <button className="absolute right-2 top-2 stroke-text"
+                            onClick={(e) => {
+                                dispatch(deleteTodo({id: el.id, status}));
+                                dispatch(addDeletedTodos());
+                                dispatch(deleteAllItems());
+                                e.stopPropagation()
+                            }}
                     >
-                        <rect
-                            x="4"
-                            y="4"
-                            width="40"
-                            height="40"
-                            rx="10"
-                            strokeWidth="2"
-                            fill="none"
-                        />
-                        <line x1="16" y1="16" x2="32" y2="32" strokeWidth="2"/>
-                        <line x1="32" y1="16" x2="16" y2="32" strokeWidth="2"/>
-                    </svg>
+                        <svg width="20" height="20" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <rect
+                                x="4"
+                                y="4"
+                                width="40"
+                                height="40"
+                                rx="10"
+                                strokeWidth="2"
+                                fill="none"
+                            />
+                            <line x1="16" y1="16" x2="32" y2="32" strokeWidth="2"/>
+                            <line x1="32" y1="16" x2="16" y2="32" strokeWidth="2"/>
+                        </svg>
 
-                </button>
-                <button className="absolute right-2 bottom-2" title="Подробнее"
-                        onClick={(e) => {
-                            dispatch(openChangeModal(el));
-                            e.stopPropagation()
-                        }}
-                >
-                    <svg className="stroke-text fill-text" width="20" height="20" viewBox="0 0 48 48" fill="none"
-                         xmlns="http://www.w3.org/2000/svg"
+                    </button>
+                    <button className="absolute right-2 bottom-2" title="Подробнее"
+                            onClick={(e) => {
+                                dispatch(openChangeModal(el));
+                                e.stopPropagation()
+                            }}
                     >
-                        <rect
-                            x="4"
-                            y="4"
-                            width="40"
-                            height="40"
-                            rx="10"
-                            strokeWidth="2"
-                            fill="none"
-                        />
-                        <circle cx="16" cy="24" r="2"/>
-                        <circle cx="24" cy="24" r="2"/>
-                        <circle cx="32" cy="24" r="2"/>
-                    </svg>
-                </button>
+                        <svg className="stroke-text fill-text" width="20" height="20" viewBox="0 0 48 48" fill="none"
+                             xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <rect
+                                x="4"
+                                y="4"
+                                width="40"
+                                height="40"
+                                rx="10"
+                                strokeWidth="2"
+                                fill="none"
+                            />
+                            <circle cx="16" cy="24" r="2"/>
+                            <circle cx="24" cy="24" r="2"/>
+                            <circle cx="32" cy="24" r="2"/>
+                        </svg>
+                    </button>
 
-                <h3 className="text-sm lg:text-lg xl:text-xl 2xl:text-2xl line-clamp-2"
-                    title={el.title.length > 25 ? el.title : ''}>{el.title.length > 25 ? el.title.slice(0, 25) + '...' : el.title}</h3>
-                <p className="text-xs lg:text-sm xl:text-md 2xl:text-lg leading-[100%] sm:leading-[115%] whitespace-pre-wrap line-clamp-3">{el.description}</p>
+                    <h3 className="text-sm lg:text-lg xl:text-xl 2xl:text-2xl line-clamp-2"
+                        title={el.title.length > 25 ? el.title : ''}>{el.title.length > 25 ? el.title.slice(0, 25) + '...' : el.title}</h3>
+                    <p className={`text-xs lg:text-sm xl:text-md 2xl:text-lg leading-[100%] sm:leading-[115%] whitespace-pre-wrap ${el.tags.length === 0 ? 'line-clamp-3' : 'line-clamp-2'}`}>{el.description}</p>
+                    <div className="flex flex-row shrink-0 gap-1 sm:gap-2 mt-auto max-w-full max-h-20 overflow-x-auto scroll-smooth scrollbar-none">
+                        {el.tags.map((tag) => (
+                            <div className="flex items-center bg-extra p-1 gap-1 rounded-lg" key={tag.id}>
+                                <span className="text-[10px] sm:text-sm leading-[100%] whitespace-nowrap">{tag.name}</span>
+                                <button className="bg-hover rounded-xl p-0.5"
+                                        onClick={(e) => {
+                                            dispatch(deleteTodoTag({todoId: el.id, tagId: tag.id}))
+                                            e.stopPropagation()
+                                        }}
+                                >
+                                    <svg className="stroke-text" xmlns="http://www.w3.org/2000/svg" width="10"
+                                         height="10"
+                                         viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
+                                         strokeLinecap="round"
+                                         strokeLinejoin="round"
+                                    >
+                                        <line x1="18" y1="6" x2="6" y2="18"/>
+                                        <line x1="6" y1="6" x2="18" y2="18"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        ))}
+                    </div>
+                </div>
             </div>
         </div>
     );

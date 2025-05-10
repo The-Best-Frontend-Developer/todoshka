@@ -50,7 +50,7 @@ const MyModal = () => {
                 onClick={() => dispatch(closeModal())}
             >
                 <div
-                    className="relative bg-second rounded-2xl w-[80vw] lg:w-[50vw] px-5 sm:px-10 md:px-20 py-5 sm:py-10"
+                    className="relative bg-second rounded-2xl w-[80vw] lg:w-[50vw] px-5 sm:px-10 py-5 sm:py-10"
                     onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}
                 >
                     <button type="button" className="absolute right-1 top-1 stroke-red-500 hover:stroke-red-400"

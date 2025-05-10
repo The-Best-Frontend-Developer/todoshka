@@ -4,7 +4,8 @@ import {openCreateModal} from "../store/Reducers/modalReducer.ts";
 import TodoItem from "./TodoItem.tsx";
 import {SortableContext} from "@dnd-kit/sortable";
 import {DragOverlay} from "@dnd-kit/core";
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import {updateDoneTodos} from "../store/Reducers/statisticsReducer.ts";
 
 const Todos = ({status, index}: { status: Status, index: number }) => {
     const dispatch = useAppDispatch();
@@ -16,6 +17,10 @@ const Todos = ({status, index}: { status: Status, index: number }) => {
     const activeItemId = useAppSelector(state => state.activeItem)
     const activeTodo = todos.waiting.concat(todos.progress, todos.done)
         .find(todo => todo.id === activeItemId.id);
+
+    useEffect(() => {
+        dispatch(updateDoneTodos(todos["done"].length))
+    }, [todos["done"]]);
 
     return (
         <>
@@ -35,7 +40,8 @@ const Todos = ({status, index}: { status: Status, index: number }) => {
                 <>
                     <SortableContext items={todos[status].map(el => el.id)}>
                         {todos[status].map((el) => (
-                            <TodoItem key={el.id} el={el} status={status}
+                            <TodoItem key={el.id} el={el}
+                                      status={status}
                                       firstIndex={firstIndex}
                                       setFirstIndex={setFirstIndex}
                             />
