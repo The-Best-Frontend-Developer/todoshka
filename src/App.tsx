@@ -7,7 +7,7 @@ import {useEffect} from "react";
 import {SelectionSync} from "./SelectionSync.tsx";
 import {deleteAllItems} from "./store/Reducers/translateItemsReducer.ts";
 import {addCreatedTodos} from "./store/Reducers/statisticsReducer.ts";
-import {addRecentTag, deleteRecentTag, updateRecentTags} from "./store/Reducers/tagsReducer.tsx";
+import {addRecentTag, deleteRecentTag, updateRecentTags} from "./store/Reducers/tagsReducer.ts";
 import {Tag, TypeTodo} from "./TypeTodo.ts";
 
 const App = () => {

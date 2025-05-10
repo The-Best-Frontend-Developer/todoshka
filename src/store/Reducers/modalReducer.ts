@@ -7,7 +7,7 @@ type InitialState = {
     currentTodo: TypeTodo
 }
 
-const currentTodo: TypeTodo = {id: Date.now(), title: 'Задача', description: '', status: 'waiting'}
+const currentTodo: TypeTodo = {id: Date.now(), title: 'Задача', description: '', status: 'waiting', tags: []}
 
 const initialState: InitialState = {openedModal: null, status: 'waiting', currentTodo}
 
