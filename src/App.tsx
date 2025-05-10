@@ -40,7 +40,6 @@ const App = () => {
     }
 
     useEffect(() => {
-        console.log('изменения')
         const allTodos: TypeTodo[] = [...todos.waiting, ...todos.progress, ...todos.done]
 
         const uniqueTagsMap = new Map<string, Tag>();
@@ -53,12 +52,10 @@ const App = () => {
         }
 
         const uniqueTags: Tag[] = Array.from(uniqueTagsMap.values())
-        console.log('Unique Tags:', uniqueTags);
 
         // Добавляем новые теги
         uniqueTags.forEach(tag => {
             if (!tags.some(t => t.name === tag.name)) {
-                console.log('Добавляю новый тег:', tag);
                 dispatch(addRecentTag(tag))
             }
         })
@@ -66,7 +63,6 @@ const App = () => {
         // Удаляем отсутствующие теги
         tags.forEach(tag => {
             if (!uniqueTags.some(t => t.name === tag.name)) {
-                console.log('Удаляю тег:', tag);
                 dispatch(deleteRecentTag(tag.name))
             }
         })
@@ -93,8 +89,6 @@ const App = () => {
         <>
             <Header/>
             <Outlet/>
-            <button onClick={clearStorage} className="absolute hover:bg-hover top-8 bg-extra p-1 rounded-2xl">очистить хранилище</button>
-            <button onClick={handleAddTodo} className="absolute hover:bg-hover top-18 bg-extra p-1 rounded-2xl">Добавить todo</button>
             <MyModal/>
             <SelectionSync/>
         </>
