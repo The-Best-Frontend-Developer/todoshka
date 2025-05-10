@@ -1,12 +1,10 @@
 import {Outlet} from "react-router-dom";
 import Header from "./Header/Header.tsx";
 import {useAppDispatch, useAppSelector} from "./store/myHook.ts";
-import {addTodo} from "./store/Reducers/todoReducer.ts";
 import MyModal from "./MyModal/MyModal.tsx";
 import {useEffect} from "react";
 import {SelectionSync} from "./SelectionSync.tsx";
 import {deleteAllItems} from "./store/Reducers/translateItemsReducer.ts";
-import {addCreatedTodos} from "./store/Reducers/statisticsReducer.ts";
 import {addRecentTag, deleteRecentTag, updateRecentTags} from "./store/Reducers/tagsReducer.ts";
 import {Tag, TypeTodo} from "./TypeTodo.ts";
 
@@ -15,29 +13,6 @@ const App = () => {
     const dispatch = useAppDispatch()
     const tags = useAppSelector(state => state.tags)
     const todos = useAppSelector(state => state.todo)
-
-    const handleAddTodo = () => {
-        dispatch(addTodo({
-            id: Math.random(),
-            title: 'Название',
-            description: 'Описание Описание Описание Описание Описание Описание Описание Описание Описание Описание ' +
-                'Описание Описание Описание Описание Описание Описание Описание Описание Описание Описание Описание ' +
-                'Описание Описание Описание Описание Описание Описание Описание Описание Описание Описание Описание ' +
-                'Описание Описание Описание Описание Описание Описание Описание ',
-            status: 'waiting',
-            tags: [
-                {id: Math.random()*0.3, name: 'Тег'},
-                {id: Math.random()*0.3, name: 'Тег'},
-                {id: Math.random()*0.3, name: 'Тег'},
-                {id: Math.random()*0.3, name: 'Тег'},
-            ]
-        }))
-        dispatch(addCreatedTodos())
-    }
-
-    const clearStorage = () => {
-        localStorage.clear()
-    }
 
     useEffect(() => {
         const allTodos: TypeTodo[] = [...todos.waiting, ...todos.progress, ...todos.done]
