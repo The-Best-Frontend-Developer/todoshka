@@ -1,5 +1,7 @@
 import {Tag} from "../TypeTodo.ts";
-import React, {useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
+import {useAppSelector} from "../store/myHook.ts";
+import FoundTags from "./FoundTags.tsx";
 
 type Props = {
     tags: Tag[],
@@ -7,9 +9,12 @@ type Props = {
 }
 
 const CreateNewTag = ({tags, setTags}: Props) => {
+    const allTags = useAppSelector(state => state.tags)
     const [createTagNow, setCreateTagNow] = useState(false)
     const [newTag, setNewTag] = useState('')
     const tagInputRef = useRef<HTMLInputElement>(null!)
+    const [createdTags, setCreatedTags] = useState(0)
+    const [canCreate, setCanCreate] = useState((tags.length < 5 && allTags.length + createdTags < 10))
 
     function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
         if (e.key === 'Enter') {
@@ -17,38 +22,56 @@ const CreateNewTag = ({tags, setTags}: Props) => {
             setCreateTagNow(false)
             setNewTag('')
             tagInputRef.current.blur()
-            if (newTag !== "") {
+            if (newTag.trim() !== "") {
                 setTags(prev => [...prev, {id: Math.random(), name: newTag}])
+                setCreatedTags(prev => prev + 1)
             }
         }
     }
 
+    useEffect(() => {
+        setCanCreate(tags.length < 5 && allTags.length + createdTags < 10)
+    }, [allTags.length, createdTags, tags.length]);
+
     return (
-        <div className="flex items-center bg-extra rounded-lg py-0.5 px-1 sm:px-1.5"
-             onClick={tags.length < 5 ? () => {
+        <div className={`flex relative items-center bg-extra rounded-lg py-0.5 px-1 sm:px-1.5 ${canCreate ? 'cursor-pointer' : 'cursor-default'}`}
+             onClick={canCreate ? () => {
                  setCreateTagNow(true);
                  tagInputRef?.current.focus()
-             } : () => {return}}
+             } : () => {
+                 return
+             }}
         >
-            {!createTagNow && <span className="text-xs sm:text-sm">{tags.length < 5 ? 'Добавить тег' : 'Максимум 5 тегов'}</span>}
-            {tags.length < 5 && (
-                <input ref={tagInputRef} value={newTag} onKeyDown={(e) => handleKeyDown(e)} onChange={(e) => setNewTag(e.target.value)}
-                   className={`${createTagNow ? 'w-30' : 'm-0 ml-1 w-5'} h-[80%] bg-second rounded-md p-1`}
-                   placeholder={createTagNow ? "тег" : "..."}
-                   onBlur={() => {
-                       setCreateTagNow(false);
-                       setNewTag('')
-                   }}
-            />)}
+            {!createTagNow && <span
+                className="text-xs sm:text-sm p-1">{tags.length > 4 ? 'Максимум 5 тегов' : allTags.length + createdTags > 9 ? 'Максимум 10 уникальных тегов' : 'Добавить тег'}</span>}
+            {canCreate && (
+                <input ref={tagInputRef} value={newTag} onKeyDown={(e) => handleKeyDown(e)}
+                       onChange={(e) => setNewTag(e.target.value)}
+                       className={`${createTagNow ? 'w-30' : 'm-0 ml-1 w-5'} h-[80%] bg-second rounded-md p-1`}
+                       placeholder={createTagNow ? "тег" : "..."}
+                       onBlur={() => {
+                           setCreateTagNow(false);
+                           setNewTag('')
+                       }}
+                />)}
             {createTagNow && (
-                <button onMouseDown={newTag !== "" ? () => setTags(prev => [...prev, {
-                    id: Math.random(),
-                    name: newTag,
-                    usages: 1
-                }]) : () => {
-                    return
-                }}
-                        className="ml-1 p-0.5"
+                <button
+                    onMouseDown={() => {
+                        setCreateTagNow(false);
+                        setNewTag('')
+                        if (newTag.trim() !== "") {
+                            setTags(prev => [
+                                ...prev,
+                                {
+                                    id: Math.random(),
+                                    name: newTag,
+                                    usages: 1
+                                }
+                            ]);
+                            setCreatedTags(prev => prev + 1)
+                        }
+                    }}
+                    className="ml-1 p-0.5"
                 >
                     {newTag !== "" ? (
                         <svg className="stroke-text" width="15" height="15" xmlns="http://www.w3.org/2000/svg"
@@ -70,6 +93,7 @@ const CreateNewTag = ({tags, setTags}: Props) => {
                     )}
                 </button>
             )}
+            {newTag.trim() !== "" && <FoundTags searchRequest={newTag} setTags={setTags}/>}
         </div>
     );
 };

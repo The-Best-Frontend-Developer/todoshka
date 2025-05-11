@@ -62,7 +62,7 @@ const ChangeModal = ({errors, setErrors}: {
             </select>
             <div className="flex gap-1 sm:gap-2 flex-wrap">
                 {tags.map((el) => (
-                    <Tags tag={el} setTags={setTags}/>
+                    <Tags key={el.id} tag={el} setTags={setTags}/>
                 ))}
                 <CreateNewTag tags={tags} setTags={setTags}/>
             </div>
