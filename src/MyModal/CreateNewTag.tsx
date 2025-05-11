@@ -1,5 +1,5 @@
 import {Tag} from "../TypeTodo.ts";
-import React, {useEffect, useRef, useState} from "react";
+import React, {useRef, useState} from "react";
 import {useAppSelector} from "../store/myHook.ts";
 import FoundTags from "./FoundTags.tsx";
 
@@ -14,7 +14,8 @@ const CreateNewTag = ({tags, setTags}: Props) => {
     const [newTag, setNewTag] = useState('')
     const tagInputRef = useRef<HTMLInputElement>(null!)
     const [createdTags, setCreatedTags] = useState(0)
-    const [canCreate, setCanCreate] = useState((tags.length < 5 && allTags.length + createdTags < 10))
+    const [findAllTags, setFindAllTags] = useState(false)
+    const buttonRef = useRef<HTMLButtonElement>(null!)
 
     function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
         if (e.key === 'Enter') {
@@ -29,22 +30,25 @@ const CreateNewTag = ({tags, setTags}: Props) => {
         }
     }
 
-    useEffect(() => {
-        setCanCreate(tags.length < 5 && allTags.length + createdTags < 10)
-    }, [allTags.length, createdTags, tags.length]);
-
     return (
-        <div className={`flex relative items-center bg-extra rounded-lg py-0.5 px-1 sm:px-1.5 ${canCreate ? 'cursor-pointer' : 'cursor-default'}`}
-             onClick={canCreate ? () => {
-                 setCreateTagNow(true);
-                 tagInputRef?.current.focus()
-             } : () => {
-                 return
+        <button ref={buttonRef} className={`flex relative items-center bg-extra rounded-lg py-0.5 px-1 sm:px-1.5 ${tags.length < 5 ? 'cursor-pointer' : '!cursor-default'}`}
+             onClick={(e) => {
+                 buttonRef.current.focus()
+                 e.preventDefault()
+                 if (tags.length < 5) {
+                     if (allTags.length + createdTags < 10) {
+                         setCreateTagNow(true);
+                         tagInputRef?.current.focus();
+                     } else {
+                         setFindAllTags(prev => !prev);
+                     }
+                 }
              }}
+             onBlur={() => setFindAllTags(false)}
         >
             {!createTagNow && <span
-                className="text-xs sm:text-sm p-1">{tags.length > 4 ? 'Максимум 5 тегов' : allTags.length + createdTags > 9 ? 'Максимум 10 уникальных тегов' : 'Добавить тег'}</span>}
-            {canCreate && (
+                className="text-xs sm:text-sm p-1">{tags.length > 4 ? 'Максимум 5 тегов' : allTags.length + createdTags > 9 ? 'Макс. 10 уникальных тегов' : 'Добавить тег'}</span>}
+            {tags.length < 5 && (
                 <input ref={tagInputRef} value={newTag} onKeyDown={(e) => handleKeyDown(e)}
                        onChange={(e) => setNewTag(e.target.value)}
                        className={`${createTagNow ? 'w-30' : 'm-0 ml-1 w-5'} h-[80%] bg-second rounded-md p-1`}
@@ -93,8 +97,8 @@ const CreateNewTag = ({tags, setTags}: Props) => {
                     )}
                 </button>
             )}
-            {newTag.trim() !== "" && <FoundTags searchRequest={newTag} setTags={setTags}/>}
-        </div>
+            {(newTag.trim() !== "" || findAllTags) && <FoundTags searchRequest={newTag} setTags={setTags} showAllTags={findAllTags}/>}
+        </button>
     );
 };
 
