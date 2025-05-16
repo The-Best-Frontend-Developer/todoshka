@@ -23,9 +23,10 @@ const todoReducer = createSlice({
             localStorage.setItem(status, JSON.stringify(state[status]))
         },
         deleteTodo: (state, action: PayloadAction<{id: number, status: Status}>) => {
-            const {id, status} = action.payload;
-            state[status] = state[status].filter((el) => el.id !== id)
-            localStorage.setItem(status, JSON.stringify(state[status]))
+            const {id, status} = action.payload
+            const todos = state[status].filter((el) => el.id !== id)
+            state[status] = todos
+            localStorage.setItem(status, JSON.stringify(todos))
         },
         updateTodo: (state, action: PayloadAction<{newTodo: TypeTodo, oldStatus: Status}>) => {
             const {id, status} = action.payload.newTodo;
@@ -116,5 +117,5 @@ const todoReducer = createSlice({
     }
 })
 
-export const {addTodo, updateTodo, deleteTodo, moveTodo, setTodoSelected, setTodoAnimated, clearTodoAnimated, deleteTodoTag} = todoReducer.actions;
+export const {addTodo, updateTodo, moveTodo, setTodoSelected, setTodoAnimated, clearTodoAnimated, deleteTodoTag, deleteTodo} = todoReducer.actions;
 export default todoReducer.reducer

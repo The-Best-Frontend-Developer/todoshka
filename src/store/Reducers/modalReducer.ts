@@ -2,7 +2,7 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {Status, TypeTodo} from "../../TypeTodo.ts";
 
 type InitialState = {
-    openedModal: "create" | "change" | "statistics" | "clear" | null
+    openedModal: "create" | "change" | "statistics" | "clear" | "delete" | null
     status: Status,
     currentTodo: TypeTodo
 }
@@ -15,28 +15,25 @@ const modalReducer = createSlice({
     name: 'modal',
     initialState,
     reducers: {
-        openCreateModal: (state, action: PayloadAction<Status>) => {
-            state.openedModal = "create"
-            state.status = action.payload
-            state.currentTodo = currentTodo
+        openModal: (
+            state,
+            action: PayloadAction<{
+                type: 'create' | 'change' | 'statistics' | 'clear' | 'delete',
+                todo?: TypeTodo,
+                status?: Status
+            }>
+        ) => {
+            const { type, todo, status } = action.payload;
+            state.openedModal = type;
+            if (todo) state.currentTodo = todo;
+            state.status = todo?.status ?? status ?? state.status;
         },
         closeModal: (state) => {
-            state.openedModal = null
-            state.status = 'waiting'
-        },
-        openChangeModal: (state, action: PayloadAction<TypeTodo>) => {
-            state.openedModal = "change"
-            state.currentTodo = action.payload
-            state.status = action.payload.status
-        },
-        openStatisticsModal: (state) => {
-            state.openedModal = "statistics"
-        },
-        openClearModal: (state) => {
-            state.openedModal = "clear"
+            state.openedModal = null;
+            state.status = 'waiting';
         }
     }
 })
 
-export const {openCreateModal, openChangeModal, closeModal, openStatisticsModal, openClearModal} = modalReducer.actions
+export const {openModal, closeModal} = modalReducer.actions
 export default modalReducer.reducer;

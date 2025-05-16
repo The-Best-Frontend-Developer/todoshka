@@ -5,9 +5,11 @@ import CreateModal from './CreateModal.tsx';
 import ChangeModal from './ChangeModal.tsx';
 import AcceptDeleteModal from './AcceptDeleteModal.tsx';
 import {deleteAllItems} from "../store/Reducers/translateItemsReducer.ts";
+import DeleteModal from "./DeleteModal.tsx";
 
 const MyModal = () => {
     const modal = useAppSelector(state => state.modal);
+    const todoToDelete = useAppSelector(state => state.deleted).find(el => el.delete)!
     const dispatch = useAppDispatch();
     const darkTheme = document.documentElement.className === 'dark';
     const [errors, setErrors] = useState<string | null>(null);
@@ -41,7 +43,7 @@ const MyModal = () => {
             dispatch(deleteAllItems())
             dispatch(closeModal())
         }
-    }, [keyDown]);
+    }, [keyDown, dispatch]);
 
     return (
         modal.openedModal && (
@@ -77,8 +79,8 @@ const MyModal = () => {
                     {(modal.openedModal === "create") &&
                         <CreateModal status={modal.status} errors={errors} setErrors={setErrors}/>}
                     {(modal.openedModal === "change") && <ChangeModal errors={errors} setErrors={setErrors}/>}
-                    {(modal.openedModal === "clear" || modal.openedModal === "statistics") &&
-                        <AcceptDeleteModal accept={modal.openedModal}/>}
+                    {(modal.openedModal === "clear" || modal.openedModal === "statistics") && <AcceptDeleteModal accept={modal.openedModal}/>}
+                    {(modal.openedModal === "delete" && <DeleteModal id={todoToDelete.id}/>)}
                 </div>
             </div>
         )

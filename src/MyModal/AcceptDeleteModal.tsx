@@ -26,7 +26,7 @@ const AcceptDeleteModal = (accept: {accept: string}) => {
                 <br/>Страница перезагрузится.
                 <br/>Вы уверены?
             </p>
-            <button onClick={handleClick} className="bg-extra hover:bg-red-400 mt-5 text-opposite text-lg p-2 rounded-xl sm:text-2xl">Подтвердить</button>
+            <button onClick={handleClick} className="mt-5 text-lg p-2 sm:text-2xl dangerousButton">Подтвердить</button>
         </div>
     );
 };

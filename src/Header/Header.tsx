@@ -14,8 +14,9 @@ const Header = () => {
             <Link to='/' className='w-10 sm:w-15 bg-gray-300 rounded-2xl p-1'>
                 <img src='./image.png' alt='логотип'/>
             </Link>
-            <Link to="/" className="hidden sm:block lg:absolute lg:left-[calc(50%_-_100px)] lg:top-3"><h2
-                className="text-xl md:text-4xl text-text noneSelect">Список дел</h2></Link>
+            <Link to="/" className={`${page.pathname === "/" ? 'hidden' : ''} sm:block lg:absolute lg:left-[calc(50%_-_100px)] lg:top-3`}>
+                <h2 className="text-xl md:text-4xl text-text noneSelect">Список дел</h2>
+            </Link>
             <div className="flex gap-2">
                 {page.pathname === "/" && <Search/>}
                 <Settings/>

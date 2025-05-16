@@ -7,6 +7,7 @@ export type TypeTodo = {
     status: Status,
     selected?: boolean,
     animated?: boolean,
+    delete?: boolean,
     tags: Tag[],
 }
 

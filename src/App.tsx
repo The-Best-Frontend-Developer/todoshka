@@ -46,7 +46,7 @@ const App = () => {
 
     useEffect(() => {
         if (tags.length > 15) {dispatch(updateRecentTags())}
-    }, [tags]);
+    }, [dispatch, tags]);
 
     useEffect(() => {
         if (modal.openedModal !== null) {
@@ -58,7 +58,7 @@ const App = () => {
 
     useEffect(() => {
         window.addEventListener('click', () => {dispatch(deleteAllItems())})
-    }, []);
+    }, [dispatch]);
 
     return (
         <>

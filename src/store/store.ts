@@ -9,6 +9,7 @@ import FirstLastElementIndexesReducer from "./Reducers/FirstLastElementIndexesRe
 import rotateReducer from "./Reducers/rotateReducer.ts";
 import statisticsReducer from "./Reducers/statisticsReducer.ts";
 import tagsReducer from "./Reducers/tagsReducer.ts";
+import deletedTodosReducer from "./Reducers/deletedTodosReducer.ts";
 
 export const store = configureStore({
     reducer: {
@@ -20,9 +21,10 @@ export const store = configureStore({
         rotate: rotateReducer,
         statistics: statisticsReducer,
         tags: tagsReducer,
+        deleted: deletedTodosReducer,
     }
 })
 
 export type RootState = ReturnType<typeof store.getState>;
 export type dispatch = typeof store.dispatch;
-export type AppThunk = ThunkAction<void, RootState, unknown, Action<string>>;
+export type AppThunk = ThunkAction<void, RootState, unknown, Action>;

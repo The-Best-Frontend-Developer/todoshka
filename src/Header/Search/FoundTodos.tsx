@@ -152,7 +152,7 @@ const FoundTodos = ({value, searchRequest, setIsSearchingNow, type}: Props) => {
                 )
             }
         });
-    }, [allTodos, value, searchRequest]);
+    }, [allTodos, searchRequest, type, value]);
 
     // ФИЛЬТРУЕТ ПО СОВПАДЕНИЯМ
 
@@ -184,7 +184,7 @@ const FoundTodos = ({value, searchRequest, setIsSearchingNow, type}: Props) => {
         });
 
         return result;
-    }, [filteredTodos, searchRequest]);
+    }, [countMatches, filteredTodos, highlightMatches, type]);
 
     function handleClick(id: number) {
         setIsSearchingNow(false)

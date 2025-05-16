@@ -1,11 +1,12 @@
 import {Status, Tag} from "../TypeTodo.ts";
-import {deleteTodo, updateTodo} from "../store/Reducers/todoReducer.ts";
+import {updateTodo} from "../store/Reducers/todoReducer.ts";
 import {closeModal} from "../store/Reducers/modalReducer.ts";
 import {useAppDispatch, useAppSelector} from "../store/myHook.ts";
 import React, {useEffect, useRef, useState} from "react";
 import {addDeletedTodos} from "../store/Reducers/statisticsReducer.ts";
 import Tags from "../Header/Search/Tags.tsx";
 import CreateNewTag from "./CreateNewTag.tsx";
+import {deleteTodoThunk} from "../store/thunk.ts";
 
 const ChangeModal = ({errors, setErrors}: {
     errors: string | null,
@@ -86,7 +87,7 @@ const ChangeModal = ({errors, setErrors}: {
                 className="border-1 p-2 bg-extra !text-red-700 hover:bg-red-500 hover:!text-white focus:outline-none rounded-xl w-full md:w-3/4 mx-auto border-red-500"
                 type="button"
                 onClick={() => {
-                    dispatch(deleteTodo({id: currentTodo.id, status: currentTodo.status}));
+                    dispatch(deleteTodoThunk({id: currentTodo.id, status: currentTodo.status}));
                     dispatch(addDeletedTodos());
                     dispatch(closeModal())
                 }}

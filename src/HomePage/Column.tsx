@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import Todos from "./Todos.tsx";
 import {Status} from "../TypeTodo.ts";
 import {useAppDispatch, useAppSelector} from "../store/myHook.ts";
-import {openCreateModal} from "../store/Reducers/modalReducer.ts";
+import {openModal} from "../store/Reducers/modalReducer.ts";
 import {rectSortingStrategy, SortableContext, verticalListSortingStrategy} from "@dnd-kit/sortable";
 import {useDroppable} from "@dnd-kit/core";
 import {moveItemsThunk} from "../store/thunk.ts";
@@ -116,7 +116,7 @@ const Column = ({containerRef, contentRef, name, status, index}: Props) => {
                             </>
                         ): null) : null
                     }
-                    <button className="stroke-text w-4 sm:w-7 aspect-square" onClick={() => dispatch(openCreateModal(status))}>
+                    <button className="stroke-text w-4 sm:w-7 aspect-square" onClick={() => dispatch(openModal({type: "create", status}))}>
                         <svg viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg">
                             <rect x="0.5" y="0.5" width="24" height="24" rx="5" fill="none" strokeWidth="2"/>
                             <line x1="12.5" y1="7" x2="12.5" y2="18" strokeWidth="2" strokeLinecap="round"/>

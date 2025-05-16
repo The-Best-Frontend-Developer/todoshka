@@ -44,7 +44,7 @@ const CreateModal = ({status, errors, setErrors}: {
                 setErrors('Название обязательно')
             }
         }
-    }, [title]);
+    }, [isTouched, setErrors, title]);
 
     function validation() {
         if ('' === title.trim()) {

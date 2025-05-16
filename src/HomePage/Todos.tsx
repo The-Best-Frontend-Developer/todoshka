@@ -1,6 +1,6 @@
 import {useAppDispatch, useAppSelector} from "../store/myHook.ts";
 import {Status} from '../TypeTodo.ts'
-import {openCreateModal} from "../store/Reducers/modalReducer.ts";
+import {openModal} from "../store/Reducers/modalReducer.ts";
 import TodoItem from "./TodoItem.tsx";
 import {SortableContext} from "@dnd-kit/sortable";
 import {DragOverlay} from "@dnd-kit/core";
@@ -20,7 +20,7 @@ const Todos = ({status, index}: { status: Status, index: number }) => {
 
     useEffect(() => {
         dispatch(updateDoneTodos(todos["done"].length))
-    }, [todos["done"]]);
+    }, [dispatch, todos]);
 
     return (
         <>
@@ -30,7 +30,7 @@ const Todos = ({status, index}: { status: Status, index: number }) => {
                     <h2>Пока пусто...</h2>
                     <button
                         className="p-2 bg-extra hover:bg-main rounded-2xl shadowItem"
-                        onClick={() => dispatch(openCreateModal(status))}
+                        onClick={() => dispatch(openModal({type: "create", status}))}
                     >
                         Создайте первую задачу
                     </button>
