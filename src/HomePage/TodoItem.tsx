@@ -267,8 +267,8 @@ const TodoItem = ({el, status, isOverlay, firstIndex, setFirstIndex, deleted}: P
                         </button>
                     }
 
-                    <h3 className="text-sm lg:text-lg xl:text-xl 2xl:text-2xl line-clamp-2"
-                        title={el.title.length > 25 ? el.title : ''}>{el.title.length > 25 ? el.title.slice(0, 25) + '...' : el.title}</h3>
+                    <h3 className="text-sm lg:text-lg xl:text-xl 2xl:text-2xl truncate"
+                        title={el.title.length > 20 ? el.title : undefined}>{el.title}</h3>
                     <p className={`text-xs lg:text-sm xl:text-md 2xl:text-lg leading-[100%] sm:leading-[115%] whitespace-pre-wrap ${el.tags.length === 0 ? 'line-clamp-3' : 'line-clamp-2'}`}>{el.description}</p>
                     <div
                         className="flex flex-row shrink-0 gap-1 sm:gap-2 mt-auto max-w-full max-h-20 overflow-x-auto scroll-smooth scrollbar-none">
