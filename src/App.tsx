@@ -1,4 +1,4 @@
-import {Outlet} from "react-router-dom";
+import {Outlet, useLocation} from "react-router-dom";
 import Header from "./Header/Header.tsx";
 import {useAppDispatch, useAppSelector} from "./store/myHook.ts";
 import MyModal from "./MyModal/MyModal.tsx";
@@ -7,8 +7,42 @@ import {SelectionSync} from "./SelectionSync.tsx";
 import {deleteAllItems} from "./store/Reducers/translateItemsReducer.ts";
 import {addRecentTag, deleteRecentTag, updateRecentTags} from "./store/Reducers/tagsReducer.ts";
 import {Tag, TypeTodo} from "./TypeTodo.ts";
+import {Helmet} from 'react-helmet';
 
 const App = () => {
+    const location = useLocation();
+    const path = location.pathname;
+
+    // Маппинг путей на данные для метаданных
+    const metaMap: Record<string, { title: string; description: string; }> = {
+        '/': {
+            title: 'Список дел',
+            description: 'Приятного планирования!',
+        },
+        '/about': {
+            title: 'О сайте',
+            description: 'Это всё сделал один человек',
+        },
+        '/statistics': {
+            title: 'Статистика',
+            description: 'А сколько созданных задач у вас?',
+        },
+        '/deleted-todos': {
+            title: 'Корзина',
+            description: 'Посмотрим, что в корзине...',
+        },
+    };
+
+    const metaCard = {
+        title: 'Тудушка',
+        description: 'Создавайте задачи, чтобы следить за расписанием',
+    }
+
+    const meta = metaMap[path] || {
+        title: 'Тудушка',
+        description: '',
+    };
+
     const modal = useAppSelector(state => state.modal)
     const dispatch = useAppDispatch()
     const tags = useAppSelector(state => state.tags)
@@ -45,7 +79,9 @@ const App = () => {
     }, [dispatch, tags, todos])
 
     useEffect(() => {
-        if (tags.length > 15) {dispatch(updateRecentTags())}
+        if (tags.length > 15) {
+            dispatch(updateRecentTags())
+        }
     }, [dispatch, tags]);
 
     useEffect(() => {
@@ -57,12 +93,20 @@ const App = () => {
     }, [modal.openedModal]);
 
     useEffect(() => {
-        window.addEventListener('click', () => {dispatch(deleteAllItems())})
+        window.addEventListener('click', () => {
+            dispatch(deleteAllItems())
+        })
     }, [dispatch]);
 
     return (
         <>
             <Header/>
+            <Helmet>
+                <title>{meta.title} — Тудушка</title>
+                <meta name="description" content={meta.description}/>
+                <meta property="og:title" content={metaCard.title} />
+                <meta property="og:description" content={metaCard.description} />
+            </Helmet>
             <Outlet/>
             <MyModal/>
             <SelectionSync/>

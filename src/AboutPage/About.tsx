@@ -5,7 +5,7 @@ const About = () => {
     const listRef = useRef<HTMLDivElement>(null!)
 
     function useThrottledHeight(delay = 5000) {
-        const [height, setHeight] = useState(window.innerHeight - 40);
+        const [height, setHeight] = useState(window.innerHeight - 140);
         const timeoutRef = useRef<number | null>(null);
 
         useEffect(() => {
@@ -13,7 +13,7 @@ const About = () => {
                 if (timeoutRef.current) return; // пропускаем, если уже ждем
 
                 timeoutRef.current = setTimeout(() => {
-                    setHeight(window.innerHeight - 40);
+                    setHeight(window.innerHeight - 140);
                     timeoutRef.current = null;
                 }, delay);
             };
@@ -31,17 +31,16 @@ const About = () => {
     }
 
     return (
-        <div className="flex flex-col p-10">
-            <div style={{height: `${String(useThrottledHeight()) + 'px'}`}} className="gap-2">
+        <div className="flex flex-col gap-15 py-10 px-10 sm:px-20">
+            <div style={{height: `${String(useThrottledHeight()) + 'px'}`}} className="gap-2 bg-extra p-3 rounded-xl">
                 <h2 className="text-2xl md:text-4xl">
                     Этот сайт был сделан&nbsp;
                     <a href="https://kwork.ru/user/karavaevkir" className="!underline p-1" target="_blank"
                        rel="noopener noreferrer" title="Мой фриланс профиль">Кириллом</a>
                 </h2>
-                <h4 className="text-xl md:text-3xl">Тут нечего писать,</h4>
-                <p className="text-xl md:text-3xl">поэтому Вы можете предложить, какую фразу хотите вставить ниже.</p>
+                <p className="text-xl md:text-3xl">Тут нечего писать, поэтому Вы можете предложить, какую фразу хотите вставить ниже.</p>
                 <div className="mt-5">
-                    <p className="text-lg md:text-2xl">Для этого напишите мне на&nbsp;
+                    <p className="text-lg md:text-2xl bg-hover p-2 rounded-lg">Для этого напишите мне на&nbsp;
                         <a href="https://mail.google.com/mail/?view=cm&fs=1&to=frontendeveloper2010@mail.ru&su=Привет,%20хочу%20предложить%20вставить%20свою%20фразу%20на%20сайт!&body=Прошу%20вставить%20на%20сайт%20фразу%20%22...%22%20...%20цвета,%20пожалуйста.%20Спасибо!"
                            target="_blank" rel="noopener noreferrer" title="Кликайте"
                            className="text-blue-600 !underline">
