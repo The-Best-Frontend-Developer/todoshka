@@ -33,11 +33,6 @@ const App = () => {
         },
     };
 
-    const metaCard = {
-        title: 'Тудушка',
-        description: 'Создавайте задачи, чтобы следить за расписанием',
-    }
-
     const meta = metaMap[path] || {
         title: 'Тудушка',
         description: '',
@@ -104,8 +99,6 @@ const App = () => {
             <Helmet>
                 <title>{meta.title} — Тудушка</title>
                 <meta name="description" content={meta.description}/>
-                <meta property="og:title" content={metaCard.title} />
-                <meta property="og:description" content={metaCard.description} />
             </Helmet>
             <Outlet/>
             <MyModal/>
